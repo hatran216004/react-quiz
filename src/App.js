@@ -1,7 +1,11 @@
-import Button from "react-bootstrap/Button";
+import Header from "./components/Header";
 
 const App = () => {
-    return <div className="App"></div>;
+    return (
+        <div className="app-container">
+            <Header />
+        </div>
+    );
 };
 
 export default App;
