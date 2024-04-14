@@ -1,0 +1,42 @@
+.hero {
+    margin-top: 80px;
+    user-select: none;
+
+    &-inner {
+        display: flex;
+        align-items: center;
+        gap: 80px;
+    }
+
+    &-media {
+        width: 700px;
+        height: 100%;
+        border-radius: 10px;
+
+        user-select: none;
+    }
+
+    &-right {
+        &__heading {
+            font-size: 70px;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        &__desc {
+            margin-top: 24px;
+            font-size: 18px;
+            letter-spacing: 0.03em;
+            line-height: 1.5;
+
+            strong {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    &-btn {
+        height: 50px;
+        margin-top: 40px;
+    }
+}

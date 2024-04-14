@@ -8,3 +8,50 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+button {
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.navbar {
+    .nav-link {
+        font-weight: 500;
+        font-size: 17px;
+
+        &:hover,
+        &.active {
+            color: #40e0fb;
+        }
+    }
+}
+
+.btn-custom {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    & + .btn-custom {
+        margin-left: 20px;
+    }
+}
+
+.btn {
+    &-outline {
+        border: 1px solid #999;
+        border-radius: 8px;
+    }
+
+    &-primary {
+        border-radius: 8px;
+        color: #fff;
+        background-color: #000;
+    }
+}

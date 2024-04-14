@@ -1,0 +1,19 @@
+.sidebar {
+    height: 100vh;
+
+    &-submenu {
+        margin-left: 9px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    &-heading {
+        color: #fff;
+        padding: 8px 0;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 2px solid rgba($color: #ebebeb, $alpha: 0.4);
+    }
+}
