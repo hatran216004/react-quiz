@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Admin.scss";
-import SidebarComponent from "./Sidebar";
+import Sidebar from "./Sidebar";
 import { FaBars } from "react-icons/fa";
 
 const Admin = () => {
@@ -8,7 +8,7 @@ const Admin = () => {
 
     return (
         <div className="admin-container">
-            <SidebarComponent collapsed={collapsed} />
+            <Sidebar collapsed={collapsed} />
             <div className="admin-content">
                 <FaBars onClick={() => setCollapsed(!collapsed)} />
                 content

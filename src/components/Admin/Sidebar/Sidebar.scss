@@ -1,19 +1,72 @@
 .sidebar {
     height: 100vh;
 
-    &-submenu {
-        margin-left: 9px;
-        display: flex;
-        align-items: center;
-        gap: 18px;
+    &-header {
+        padding: 9px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 15px;
+
+        &-icon {
+            color: #00ffff;
+            font-size: 42px;
+        }
     }
 
-    &-heading {
-        color: #fff;
-        padding: 8px 0;
-        font-size: 24px;
-        font-weight: 600;
-        text-align: center;
-        border-bottom: 2px solid rgba($color: #ebebeb, $alpha: 0.4);
+    &-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        cursor: pointer;
+
+        &-wrapper {
+            padding: 16px;
+        }
     }
+}
+
+// color text
+.pro-sidebar {
+    color: rgba($color: #fff, $alpha: 0.7);
+}
+
+// background image
+.pro-sidebar > .pro-sidebar-inner > img.sidebar-bg {
+    opacity: 0.4;
+}
+
+// background submenu
+.pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+}
+
+// background icon
+.pro-sidebar
+    .pro-menu.shaped
+    .pro-menu-item
+    > .pro-inner-item
+    > .pro-icon-wrapper {
+    background-color: transparent;
+}
+
+// background menu item hover
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:hover {
+    background-color: rgba($color: #fff, $alpha: 0.2);
+}
+
+.pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu .pro-inner-list-item {
+    padding-left: 0;
+}
+
+.pro-sidebar
+    .pro-menu
+    .pro-menu-item.pro-sub-menu
+    .pro-inner-list-item
+    .pro-inner-item {
+    padding: 12px 40px;
+}
+
+.pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item > div > ul {
+    padding: 0;
 }
