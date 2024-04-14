@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
     ProSidebar,
     Menu,
@@ -13,10 +13,10 @@ import {
     FaTachometerAlt,
     FaGem,
     FaList,
-    FaRegLaughWink,
     FaHeart,
     FaReact,
 } from "react-icons/fa";
+import { GrUserManager } from "react-icons/gr";
 import "react-pro-sidebar/dist/css/styles.css";
 
 import sidebarBg from "../../../assets/img/sidebar-bg.jpg";
@@ -44,14 +44,18 @@ const Sidebar = ({ collapsed, toggled }) => {
             {/* Content */}
             <SidebarContent>
                 <Menu iconShape="circle">
-                    <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
+                    <MenuItem icon={<FaTachometerAlt />}>
+                        Dashboard <Link to="/admin" />
+                    </MenuItem>
                     <MenuItem icon={<FaGem />}>Components</MenuItem>
-                    <SubMenu title={"With Suffix"} icon={<FaRegLaughWink />}>
-                        <MenuItem>Submenu 1</MenuItem>
-                        <MenuItem>Submenu 2</MenuItem>
-                        <MenuItem>Submenu 3</MenuItem>
+                    <SubMenu title={"Features"} icon={<GrUserManager />}>
+                        <MenuItem>
+                            Manage Users <Link to="/admin/manage-users" />
+                        </MenuItem>
+                        <MenuItem>Manage Quiz Test</MenuItem>
+                        <MenuItem>Manage Questions</MenuItem>
                     </SubMenu>
-                    <SubMenu title={"With Prefix"} icon={<FaHeart />}>
+                    <SubMenu title={"With Suffi"} icon={<FaHeart />}>
                         <MenuItem>Submenu 1</MenuItem>
                         <MenuItem>Submenu 2</MenuItem>
                         <MenuItem>Submenu 3</MenuItem>
@@ -69,7 +73,7 @@ const Sidebar = ({ collapsed, toggled }) => {
             {/* Footer */}
             <SidebarFooter style={{ textAlign: "center" }}>
                 <div className="sidebar-btn-wrapper">
-                    <Link className="sidebar-btn">
+                    <Link className="sidebar-btn" to="/">
                         <FaUser />
                         <span>Ha Tran</span>
                     </Link>

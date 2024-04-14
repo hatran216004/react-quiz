@@ -1,4 +1,4 @@
-import hero_video from "../../assets/video/hero.mp4";
+import hero_video from "../../assets/video/hero.webm";
 import "./Home.scss";
 
 const Home = () => {

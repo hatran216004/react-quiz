@@ -12,6 +12,8 @@ import GlobalSyles from "./components/GlobalSyles";
 import User from "./components/User";
 import Admin from "./components/Admin";
 import Home from "./components/Home";
+import DashBoard from "./components/Admin/Content/DashBoard";
+import ManageUsers from "./components/Admin/Content/ManageUsers";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,9 +23,12 @@ root.render(
                 <Routes>
                     <Route path="/" element={<App />}>
                         <Route index element={<Home />} />
-                        <Route path="/users" element={<User />} />
+                        <Route path="users" element={<User />} />
                     </Route>
-                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin" element={<Admin />}>
+                        <Route index element={<DashBoard />} />
+                        <Route path="manage-users" element={<ManageUsers />} />
+                    </Route>
                 </Routes>
             </Router>
         </GlobalSyles>
