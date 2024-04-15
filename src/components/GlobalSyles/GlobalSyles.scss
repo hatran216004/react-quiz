@@ -35,6 +35,7 @@ button {
     padding: 0 16px;
     font-size: 16px;
     font-weight: 500;
+    border-radius: 8px;
 
     &:hover {
         opacity: 0.8;
@@ -48,12 +49,20 @@ button {
 .btn {
     &-outline {
         border: 1px solid #999;
-        border-radius: 8px;
     }
 
     &-primary {
-        border-radius: 8px;
+        border-color: transparent;
         color: #fff;
         background-color: #000;
+
+        &:hover {
+            background-color: #000;
+        }
+    }
+
+    &-add-user {
+        color: #fff;
+        background-color: #0dcece;
     }
 }
