@@ -2,14 +2,25 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import axios from "axios";
 
-const ModalCreateUser = ({ show, handleClose }) => {
+const ModalCreateUser = ({ show, setShow }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [role, setRole] = useState("USER");
     const [avatar, setAvatar] = useState();
-    const [image, setImage] = useState("");
+    // const [image, setImage] = useState("");
+
+    // close modal
+    const handleClose = () => {
+        setShow(false);
+        setEmail("");
+        setPassword("");
+        setUsername("");
+        setRole("USER");
+        setAvatar();
+    };
 
     // Cleanup file image
     useEffect(() => {
@@ -22,8 +33,23 @@ const ModalCreateUser = ({ show, handleClose }) => {
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
-        setImage(e.target.files[0]);
         setAvatar(file);
+    };
+
+    const handleSubmitCreateUser = async () => {
+        const data = new FormData();
+        data.append("email", email);
+        data.append("password", password);
+        data.append("username", username);
+        data.append("role", role);
+        data.append("userImage", avatar);
+
+        let res = await axios.post(
+            "http://localhost:8081/api/v1/participant",
+            data
+        );
+        console.log(res);
+        handleClose();
     };
 
     return (
@@ -56,6 +82,7 @@ const ModalCreateUser = ({ show, handleClose }) => {
                             Password
                         </label>
                         <input
+                            autoComplete="off"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             type="password"
@@ -119,7 +146,10 @@ const ModalCreateUser = ({ show, handleClose }) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
+                <Button
+                    variant="primary"
+                    onClick={() => handleSubmitCreateUser()}
+                >
                     Save
                 </Button>
             </Modal.Footer>

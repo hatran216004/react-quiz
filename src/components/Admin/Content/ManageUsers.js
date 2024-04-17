@@ -4,7 +4,6 @@ import "./ManageUsers.scss";
 
 const ManageUsers = () => {
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
 
     return (
         <div className="manage-users-container">
@@ -17,7 +16,7 @@ const ManageUsers = () => {
                     Add new user
                 </button>
                 <div className="table-user-wrapper">table users</div>
-                <ModalCreateUser show={show} handleClose={handleClose} />
+                <ModalCreateUser show={show} setShow={setShow} />
             </div>
         </div>
     );
