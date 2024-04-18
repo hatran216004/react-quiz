@@ -65,4 +65,27 @@ button {
         color: #fff;
         background-color: #0dcece;
     }
+
+    &-delete {
+        color: #d33a2c;
+        background-color: #ffe7e7;
+    }
+
+    &-update {
+        color: #fff;
+        background-color: blueviolet;
+    }
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.no-data {
+    margin-top: 50px;
+    display: block;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 600;
+    color: #ccc;
 }

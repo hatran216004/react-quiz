@@ -10,12 +10,14 @@ const ManageUsers = () => {
         <div className="manage-users-container">
             <h1 className="manage-users-title">Manage Users</h1>
             <div className="users-content">
-                <button
-                    className="btn-custom btn-add-user"
-                    onClick={() => setShowModalCreateUser(true)}
-                >
-                    Add new user
-                </button>
+                <div className="d-flex">
+                    <button
+                        className="btn-custom btn-add-user ms-auto"
+                        onClick={() => setShowModalCreateUser(true)}
+                    >
+                        Add new user
+                    </button>
+                </div>
                 <div className="table-user-wrapper">
                     <TableUser />
                 </div>
