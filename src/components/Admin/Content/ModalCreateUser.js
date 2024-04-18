@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import axios from "axios";
+import "./ManageUsers.scss";
+import { toast } from "react-toastify";
 
 const ModalCreateUser = ({ show, setShow }) => {
     const [email, setEmail] = useState("");
@@ -36,7 +38,28 @@ const ModalCreateUser = ({ show, setShow }) => {
         setAvatar(file);
     };
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const handleSubmitCreateUser = async () => {
+        // validate
+        const isValidEmail = validateEmail(email);
+        if (!isValidEmail) {
+            toast.error("Please enter a valid emal address!");
+            return;
+        }
+
+        if (!password) {
+            toast.error("Please enter your password!");
+            return;
+        }
+
+        // call api
         const data = new FormData();
         data.append("email", email);
         data.append("password", password);
@@ -48,8 +71,13 @@ const ModalCreateUser = ({ show, setShow }) => {
             "http://localhost:8081/api/v1/participant",
             data
         );
-        console.log(res);
-        handleClose();
+        console.log(res.data);
+        if (res.data && res.data.EC === 0) {
+            toast.success(res.data.EM);
+            handleClose();
+        } else {
+            toast.error(res.data.EM);
+        }
     };
 
     return (

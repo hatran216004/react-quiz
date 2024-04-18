@@ -3,7 +3,7 @@ import ModalCreateUser from "./ModalCreateUser";
 import "./ManageUsers.scss";
 
 const ManageUsers = () => {
-    const [show, setShow] = useState(false);
+    const [showModalCreateUser, setShowModalCreateUser] = useState(false);
 
     return (
         <div className="manage-users-container">
@@ -11,12 +11,15 @@ const ManageUsers = () => {
             <div className="users-content">
                 <button
                     className="btn-custom btn-add-user"
-                    onClick={() => setShow(true)}
+                    onClick={() => setShowModalCreateUser(true)}
                 >
                     Add new user
                 </button>
                 <div className="table-user-wrapper">table users</div>
-                <ModalCreateUser show={show} setShow={setShow} />
+                <ModalCreateUser
+                    show={showModalCreateUser}
+                    setShow={setShowModalCreateUser}
+                />
             </div>
         </div>
     );
