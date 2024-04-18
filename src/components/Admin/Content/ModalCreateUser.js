@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import axios from "axios";
 import "./ManageUsers.scss";
 import { toast } from "react-toastify";
+import { postCreateNewUser } from "../../../services/apiServices";
 
 const ModalCreateUser = ({ show, setShow }) => {
     const [email, setEmail] = useState("");
@@ -60,23 +60,19 @@ const ModalCreateUser = ({ show, setShow }) => {
         }
 
         // call api
-        const data = new FormData();
-        data.append("email", email);
-        data.append("password", password);
-        data.append("username", username);
-        data.append("role", role);
-        data.append("userImage", avatar);
-
-        let res = await axios.post(
-            "http://localhost:8081/api/v1/participant",
-            data
+        let data = await postCreateNewUser(
+            email,
+            password,
+            username,
+            role,
+            avatar
         );
-        console.log(res.data);
-        if (res.data && res.data.EC === 0) {
-            toast.success(res.data.EM);
+
+        if (data && data.EC === 0) {
+            toast.success(data.EM);
             handleClose();
         } else {
-            toast.error(res.data.EM);
+            toast.error(data.EM);
         }
     };
 
