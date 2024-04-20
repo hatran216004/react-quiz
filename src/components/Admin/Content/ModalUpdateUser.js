@@ -66,22 +66,7 @@ const ModalUpdateUser = ({
         setImage(e.target.files[0]);
     };
 
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
-
-    const handleSubmitCreateUser = async () => {
-        // validate
-        const isValidEmail = validateEmail(email);
-        if (!isValidEmail) {
-            toast.error("Please enter a valid emal address!");
-            return;
-        }
-
+    const handleSubmitUpdateUser = async () => {
         // call api to update user
         let data = await putUpdateUser(dataUpdate.id, username, role, image);
 
@@ -192,7 +177,7 @@ const ModalUpdateUser = ({
                 </Button>
                 <Button
                     variant="primary"
-                    onClick={() => handleSubmitCreateUser()}
+                    onClick={() => handleSubmitUpdateUser()}
                 >
                     Save changes
                 </Button>

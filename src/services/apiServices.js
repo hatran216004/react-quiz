@@ -26,3 +26,7 @@ export const putUpdateUser = (id, username, role, image) => {
 
     return axios.put("v1/participant", data);
 };
+
+export const deleteUser = (id) => {
+    return axios.delete("v1/participant", { data: { id } });
+};

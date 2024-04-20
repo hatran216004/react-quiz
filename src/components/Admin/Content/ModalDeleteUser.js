@@ -1,12 +1,21 @@
-import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { deleteUser } from "../../../services/apiServices";
+import { toast } from "react-toastify";
 
-const ModalDeleteUser = ({ show, setShow, dataDelete }) => {
+const ModalDeleteUser = ({ show, setShow, dataDelete, fetchListUsers }) => {
     const handleClose = () => setShow(false);
 
-    const handleComfirmDeleteUser = () => {
-        console.log("test delete suer");
+    const handleComfirmDeleteUser = async () => {
+        let data = await deleteUser(dataDelete.id);
+
+        if (data && data.EC === 0) {
+            toast.success(data.EM);
+            handleClose();
+            await fetchListUsers();
+        } else {
+            toast.error(data.EM);
+        }
     };
 
     return (
@@ -16,7 +25,7 @@ const ModalDeleteUser = ({ show, setShow, dataDelete }) => {
             </Modal.Header>
             <Modal.Body>
                 Are you sure to delete this user with email:{" "}
-                <b>{dataDelete.email}</b>?
+                <b>{dataDelete && dataDelete.email}</b>?
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
