@@ -1,27 +1,36 @@
+import "./ManageUsers.scss";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import "./ManageUsers.scss";
 import { toast } from "react-toastify";
+import _ from "lodash";
+
 import { postCreateNewUser } from "../../../services/apiServices";
 
-const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
+const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [role, setRole] = useState("USER");
     const [avatar, setAvatar] = useState();
 
-    // close modal
-    const handleClose = () => {
-        setShow(false);
-        setEmail("");
-        setPassword("");
-        setUsername("");
-        setRole("USER");
-        setAvatar();
-    };
+    useEffect(() => {
+        // dataUpdate no empty
+        if (!_.isEmpty(dataUpdate)) {
+            setEmail(dataUpdate.email);
+            setUsername(dataUpdate.username);
+            setRole(dataUpdate.role);
+
+            if (dataUpdate.image) {
+                const newImage = {
+                    preview: `data:image/jpeg;base64,${dataUpdate.image}`,
+                };
+
+                setAvatar(newImage);
+            }
+        }
+    }, [dataUpdate]);
 
     // Cleanup file image
     useEffect(() => {
@@ -35,6 +44,16 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
         setAvatar(file);
+    };
+
+    // close modal
+    const handleClose = () => {
+        setShow(false);
+        setEmail("");
+        setPassword("");
+        setUsername("");
+        setRole("USER");
+        setAvatar();
     };
 
     const validateEmail = (email) => {
@@ -85,7 +104,7 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
             className="modal-add-user"
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add new user</Modal.Title>
+                <Modal.Title>Update user</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form className="row g-3">
@@ -94,6 +113,7 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
                             Email
                         </label>
                         <input
+                            disabled
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email"
@@ -106,6 +126,7 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
                             Password
                         </label>
                         <input
+                            disabled
                             autoComplete="off"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -181,4 +202,4 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
     );
 };
 
-export default ModalCreateUser;
+export default ModalUpdateUser;

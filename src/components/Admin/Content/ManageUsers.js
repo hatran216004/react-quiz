@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import ModalCreateUser from "./ModalCreateUser";
 import "./ManageUsers.scss";
 import TableUser from "./TableUser";
 import { getAllUser } from "../../../services/apiServices";
+import ModalCreateUser from "./ModalCreateUser";
+import ModalUpdateUser from "./ModalUpdateUser";
 
 const ManageUsers = () => {
     const [showModalCreateUser, setShowModalCreateUser] = useState(false);
+    const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
     const [listUsers, setListUsers] = useState([]);
+    const [dataUpdate, setdataUpdate] = useState({});
 
     useEffect(() => {
         fetchListUsers();
@@ -18,6 +21,11 @@ const ManageUsers = () => {
         if (data.EC === 0) {
             setListUsers(data.DT);
         }
+    };
+
+    const handleShowUpdateUser = (user) => {
+        setShowModalUpdateUser(true);
+        setdataUpdate(user);
     };
 
     return (
@@ -33,12 +41,20 @@ const ManageUsers = () => {
                     </button>
                 </div>
                 <div className="table-user-wrapper">
-                    <TableUser listUsers={listUsers} />
+                    <TableUser
+                        listUsers={listUsers}
+                        handleShowUpdateUser={handleShowUpdateUser}
+                    />
                 </div>
                 <ModalCreateUser
                     show={showModalCreateUser}
                     setShow={setShowModalCreateUser}
                     fetchListUsers={fetchListUsers}
+                />
+                <ModalUpdateUser
+                    show={showModalUpdateUser}
+                    setShow={setShowModalUpdateUser}
+                    dataUpdate={dataUpdate}
                 />
             </div>
         </div>
