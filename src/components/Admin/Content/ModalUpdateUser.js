@@ -6,14 +6,21 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
-import { postCreateNewUser } from "../../../services/apiServices";
+import { putUpdateUser } from "../../../services/apiServices";
 
-const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
+const ModalUpdateUser = ({
+    show,
+    setShow,
+    fetchListUsers,
+    dataUpdate,
+    setdataUpdate,
+}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [role, setRole] = useState("USER");
-    const [avatar, setAvatar] = useState();
+    const [avatar, setAvatar] = useState(); // preview image
+    const [image, setImage] = useState();
 
     useEffect(() => {
         // dataUpdate no empty
@@ -39,13 +46,6 @@ const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
         };
     }, [avatar]);
 
-    // Handle upload image
-    const handleUploadImage = (e) => {
-        const file = e.target.files[0];
-        file.preview = URL.createObjectURL(file);
-        setAvatar(file);
-    };
-
     // close modal
     const handleClose = () => {
         setShow(false);
@@ -54,6 +54,16 @@ const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
         setUsername("");
         setRole("USER");
         setAvatar();
+        setImage();
+        setdataUpdate({});
+    };
+
+    // Handle upload image
+    const handleUploadImage = (e) => {
+        const file = e.target.files[0];
+        file.preview = URL.createObjectURL(file);
+        setAvatar(file);
+        setImage(e.target.files[0]);
     };
 
     const validateEmail = (email) => {
@@ -72,19 +82,8 @@ const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
             return;
         }
 
-        if (!password) {
-            toast.error("Please enter your password!");
-            return;
-        }
-
-        // call api
-        let data = await postCreateNewUser(
-            email,
-            password,
-            username,
-            role,
-            avatar
-        );
+        // call api to update user
+        let data = await putUpdateUser(dataUpdate.id, username, role, image);
 
         if (data && data.EC === 0) {
             toast.success(data.EM);
@@ -195,7 +194,7 @@ const ModalUpdateUser = ({ show, setShow, fetchListUsers, dataUpdate }) => {
                     variant="primary"
                     onClick={() => handleSubmitCreateUser()}
                 >
-                    Save
+                    Save changes
                 </Button>
             </Modal.Footer>
         </Modal>

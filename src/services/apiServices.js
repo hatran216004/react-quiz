@@ -1,17 +1,28 @@
 import axios from "../utils/axiosCustomize";
 
-export const postCreateNewUser = (email, password, username, role, avatar) => {
+export const postCreateNewUser = (email, password, username, role, image) => {
     // submit data
     const data = new FormData();
     data.append("email", email);
     data.append("password", password);
     data.append("username", username);
     data.append("role", role);
-    data.append("userImage", avatar);
+    data.append("userImage", image);
 
     return axios.post("v1/participant", data);
 };
 
 export const getAllUser = () => {
     return axios.get("v1/participant/all");
+};
+
+export const putUpdateUser = (id, username, role, image) => {
+    // update data
+    const data = new FormData();
+    data.append("id", id);
+    data.append("username", username);
+    data.append("role", role);
+    data.append("userImage", image);
+
+    return axios.put("v1/participant", data);
 };

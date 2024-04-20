@@ -11,7 +11,15 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [role, setRole] = useState("USER");
-    const [avatar, setAvatar] = useState();
+    const [avatar, setAvatar] = useState(); // preview image
+    const [image, setImage] = useState();
+
+    // Cleanup file image
+    useEffect(() => {
+        return () => {
+            avatar && URL.revokeObjectURL(avatar.preview);
+        };
+    }, [avatar]);
 
     // close modal
     const handleClose = () => {
@@ -21,20 +29,15 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
         setUsername("");
         setRole("USER");
         setAvatar();
+        setImage();
     };
-
-    // Cleanup file image
-    useEffect(() => {
-        return () => {
-            avatar && URL.revokeObjectURL(avatar.preview);
-        };
-    }, [avatar]);
 
     // Handle upload image
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
         setAvatar(file);
+        setImage(e.target.files[0]);
     };
 
     const validateEmail = (email) => {
@@ -58,13 +61,13 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
             return;
         }
 
-        // call api
+        // call api to create user
         let data = await postCreateNewUser(
             email,
             password,
             username,
             role,
-            avatar
+            image
         );
 
         if (data && data.EC === 0) {
