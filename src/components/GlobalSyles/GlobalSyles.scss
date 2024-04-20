@@ -74,7 +74,12 @@ button {
 
     &-update {
         color: #fff;
-        background-color: blueviolet;
+        background-color: rgba($color: #ff6d24, $alpha: 0.8);
+    }
+
+    &-view-user {
+        color: green;
+        background-color: #c0fad6;
     }
 }
 

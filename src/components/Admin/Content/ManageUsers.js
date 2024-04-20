@@ -4,10 +4,12 @@ import TableUser from "./TableUser";
 import { getAllUser } from "../../../services/apiServices";
 import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateUser from "./ModalUpdateUser";
+import ModalViewUser from "./ModalViewUser";
 
 const ManageUsers = () => {
     const [showModalCreateUser, setShowModalCreateUser] = useState(false);
     const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
+    const [showModalViewUser, setShowModalViewUser] = useState(false);
     const [listUsers, setListUsers] = useState([]);
     const [dataUpdate, setdataUpdate] = useState({});
 
@@ -15,7 +17,7 @@ const ManageUsers = () => {
         fetchListUsers();
     }, []);
 
-    // all api get all user
+    // all api to get all user
     const fetchListUsers = async () => {
         let data = await getAllUser();
         if (data.EC === 0) {
@@ -25,6 +27,11 @@ const ManageUsers = () => {
 
     const handleShowUpdateUser = (user) => {
         setShowModalUpdateUser(true);
+        setdataUpdate(user);
+    };
+
+    const handleShowViewUser = (user) => {
+        setShowModalViewUser(true);
         setdataUpdate(user);
     };
 
@@ -44,6 +51,7 @@ const ManageUsers = () => {
                     <TableUser
                         listUsers={listUsers}
                         handleShowUpdateUser={handleShowUpdateUser}
+                        handleShowViewUser={handleShowViewUser}
                     />
                 </div>
                 <ModalCreateUser
@@ -57,6 +65,12 @@ const ManageUsers = () => {
                     dataUpdate={dataUpdate}
                     setdataUpdate={setdataUpdate}
                     fetchListUsers={fetchListUsers}
+                />
+                <ModalViewUser
+                    show={showModalViewUser}
+                    setShow={setShowModalViewUser}
+                    dataUpdate={dataUpdate}
+                    setdataUpdate={setdataUpdate}
                 />
             </div>
         </div>

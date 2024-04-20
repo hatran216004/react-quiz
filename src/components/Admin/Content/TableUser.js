@@ -1,8 +1,8 @@
-const TableUser = ({ listUsers, handleShowUpdateUser }) => {
+const TableUser = ({ listUsers, handleShowUpdateUser, handleShowViewUser }) => {
     return (
         <>
             {listUsers.length > 0 ? (
-                <table className="table table-hover table-bordered">
+                <table className="table table-bordered">
                     <thead>
                         <tr className="text-center">
                             <th scope="col">Id</th>
@@ -21,7 +21,12 @@ const TableUser = ({ listUsers, handleShowUpdateUser }) => {
                                     <td>{user.email}</td>
                                     <td className="text-center">{user.role}</td>
                                     <td className="d-flex justify-content-center">
-                                        <button className="btn-custom btn-add-user">
+                                        <button
+                                            className="btn-custom btn-view-user"
+                                            onClick={() =>
+                                                handleShowViewUser(user)
+                                            }
+                                        >
                                             View
                                         </button>
                                         <button
