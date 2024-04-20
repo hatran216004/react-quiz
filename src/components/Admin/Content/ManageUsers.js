@@ -5,19 +5,23 @@ import { getAllUser } from "../../../services/apiServices";
 import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 const ManageUsers = () => {
     const [showModalCreateUser, setShowModalCreateUser] = useState(false);
     const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
     const [showModalViewUser, setShowModalViewUser] = useState(false);
+    const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
+
     const [listUsers, setListUsers] = useState([]);
     const [dataUpdate, setdataUpdate] = useState({});
+    const [dataDelete, setdataDelete] = useState({});
 
     useEffect(() => {
         fetchListUsers();
     }, []);
 
-    // all api to get all user
+    // call api to get all user
     const fetchListUsers = async () => {
         let data = await getAllUser();
         if (data.EC === 0) {
@@ -33,6 +37,11 @@ const ManageUsers = () => {
     const handleShowViewUser = (user) => {
         setShowModalViewUser(true);
         setdataUpdate(user);
+    };
+
+    const handleShowDeleteUser = (user) => {
+        setShowModalDeleteUser(true);
+        setdataDelete(user);
     };
 
     return (
@@ -52,6 +61,7 @@ const ManageUsers = () => {
                         listUsers={listUsers}
                         handleShowUpdateUser={handleShowUpdateUser}
                         handleShowViewUser={handleShowViewUser}
+                        handleShowDeleteUser={handleShowDeleteUser}
                     />
                 </div>
                 <ModalCreateUser
@@ -71,6 +81,11 @@ const ManageUsers = () => {
                     setShow={setShowModalViewUser}
                     dataUpdate={dataUpdate}
                     setdataUpdate={setdataUpdate}
+                />
+                <ModalDeleteUser
+                    show={showModalDeleteUser}
+                    setShow={setShowModalDeleteUser}
+                    dataDelete={dataDelete}
                 />
             </div>
         </div>

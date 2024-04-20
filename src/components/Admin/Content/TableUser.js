@@ -1,4 +1,9 @@
-const TableUser = ({ listUsers, handleShowUpdateUser, handleShowViewUser }) => {
+const TableUser = ({
+    listUsers,
+    handleShowUpdateUser,
+    handleShowViewUser,
+    handleShowDeleteUser,
+}) => {
     return (
         <>
             {listUsers.length > 0 ? (
@@ -37,7 +42,12 @@ const TableUser = ({ listUsers, handleShowUpdateUser, handleShowViewUser }) => {
                                         >
                                             Edit user
                                         </button>
-                                        <button className="btn-custom btn-delete">
+                                        <button
+                                            className="btn-custom btn-delete"
+                                            onClick={() =>
+                                                handleShowDeleteUser(user)
+                                            }
+                                        >
                                             Delete
                                         </button>
                                     </td>
