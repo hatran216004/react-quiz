@@ -30,3 +30,7 @@ export const putUpdateUser = (id, username, role, image) => {
 export const deleteUser = (id) => {
     return axios.delete("v1/participant", { data: { id } });
 };
+
+export const getUserWithPaginate = (page, limit) => {
+    return axios.get(`v1/participant?page=${page}&limit=${limit}`);
+};

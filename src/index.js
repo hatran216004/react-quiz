@@ -8,7 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 
-import GlobalSyles from "./components/GlobalSyles";
+import GlobalStyles from "./components/GlobalStyles";
 import User from "./components/User";
 import Admin from "./components/Admin";
 import Home from "./components/Home";
@@ -18,7 +18,7 @@ import ManageUsers from "./components/Admin/Content/ManageUsers";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
-        <GlobalSyles>
+        <GlobalStyles>
             <Router>
                 <Routes>
                     <Route path="/" element={<App />}>
@@ -31,7 +31,7 @@ root.render(
                     </Route>
                 </Routes>
             </Router>
-        </GlobalSyles>
+        </GlobalStyles>
     </Provider>
 );
 reportWebVitals();

@@ -95,3 +95,18 @@ button {
     font-weight: 600;
     color: #ccc;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+}
