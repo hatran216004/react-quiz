@@ -38,7 +38,10 @@ const Header = () => {
                             >
                                 Login
                             </button>
-                            <button className="btn-custom btn-primary">
+                            <button
+                                className="btn-custom btn-primary"
+                                onClick={() => navigate("/signup")}
+                            >
                                 Sign up
                             </button>
                         </div>

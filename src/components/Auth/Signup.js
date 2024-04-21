@@ -1,16 +1,18 @@
 import "./Auth.scss";
 import { useState } from "react";
+import { CiUser } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaFacebookF, FaGoogle, FaTwitter, FaArrowLeft } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { postLogin } from "../../services/apiServices";
-import form__bg from "../../assets/img/form-login-bg.jpg";
+import { postSignup } from "../../services/apiServices";
+import form__signup_bg from "../../assets/img/form-signup-bg.jpg";
 
-const Login = () => {
+const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
 
     let navigate = useNavigate();
@@ -23,7 +25,7 @@ const Login = () => {
             );
     };
 
-    const handleLogin = async (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
         // validate
         const isValidEmail = validateEmail(email);
@@ -38,10 +40,10 @@ const Login = () => {
         }
 
         setLoading(true);
-        let res = await postLogin(email, password);
+        let res = await postSignup(email, username, password);
         if (res && res.EC === 0) {
             toast.success(res.EM);
-            navigate("/");
+            navigate("/login");
         } else {
             toast.error(res.EM);
         }
@@ -51,18 +53,19 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="form-media">
-                <img src={form__bg} alt="" />
+                <img src={form__signup_bg} alt="" />
             </div>
-            <div className="form-auth-wrapper">
+            <div className="form-auth-wrapper form-auth-wrapper-signup">
                 <div className="form-auth-inner">
-                    <h2 className="form-title">Login</h2>
+                    <h2 className="form-title">Sign Up</h2>
                     <form action="" autoComplete="off">
                         <div className="form-group">
                             <label htmlFor="email" className="form-label">
-                                Email (testlogin@gmail.com)
+                                Email
                             </label>
                             <div className="form-text-input">
                                 <input
+                                    required
                                     id="email"
                                     type="email"
                                     className="form-input"
@@ -76,12 +79,33 @@ const Login = () => {
                                 />
                             </div>
                         </div>
+
                         <div className="form-group">
-                            <label htmlFor="password" className="form-label">
-                                Password (123456)
+                            <label htmlFor="username" className="form-label">
+                                Username
                             </label>
                             <div className="form-text-input">
                                 <input
+                                    id="username"
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Type your username"
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
+                                />
+                                <CiUser className="form-icon" />
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="password" className="form-label">
+                                Password
+                            </label>
+                            <div className="form-text-input">
+                                <input
+                                    required
                                     autoComplete="off"
                                     id="password"
                                     placeholder="Type your password"
@@ -94,21 +118,18 @@ const Login = () => {
                                 />
                             </div>
                         </div>
-                        <span className="form-forgotpassword">
-                            Forgot password?
-                        </span>
                         <button
                             className="form-submit"
-                            onClick={(e) => handleLogin(e)}
+                            onClick={(e) => handleSignup(e)}
                         >
                             {loading ? (
                                 <AiOutlineLoading className="form-icon-loading" />
                             ) : (
-                                "Login"
+                                "Sign Up"
                             )}
                         </button>
                     </form>
-                    <span className="form-signup-order">Or Sign In Using</span>
+                    <span className="form-signup-order">Or Sign Up Using</span>
                     <div className="form-socials">
                         <div className="form-socials-item">
                             <FaFacebookF color="#fff" />
@@ -121,19 +142,19 @@ const Login = () => {
                         </div>
                     </div>
                     <span className="form-signup-order">
-                        Have not account yet ?
+                        Do you have an account?
                     </span>
                     <div className="d-flex justify-content-center">
                         <button
                             className="form-bottom"
-                            onClick={() => navigate("/signup")}
+                            onClick={() => navigate("/login")}
                         >
-                            SIGN UP
+                            SIGN IN
                         </button>
                     </div>
                     <div className="form-back" onClick={() => navigate("/")}>
                         <FaArrowLeft className="form-back-icon" />
-                        Back
+                        Back Home
                     </div>
                 </div>
             </div>
@@ -141,4 +162,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;
