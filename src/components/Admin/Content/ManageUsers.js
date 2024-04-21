@@ -22,17 +22,8 @@ const ManageUsers = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        // fetchListUsers();
         fetchListUsersWithPaginate(1);
     }, []);
-
-    // call api to get all user
-    // const fetchListUsers = async () => {
-    //     let res = await getAllUser();
-    //     if (res.EC === 0) {
-    //         setListUsers(res.DT);
-    //     }
-    // };
 
     // call api to get user with paginate
     const fetchListUsersWithPaginate = async (page) => {
