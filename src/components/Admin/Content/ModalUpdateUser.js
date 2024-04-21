@@ -11,9 +11,10 @@ import { putUpdateUser } from "../../../services/apiServices";
 const ModalUpdateUser = ({
     show,
     setShow,
-    fetchListUsers,
     dataUpdate,
     setdataUpdate,
+    fetchListUsersWithPaginate,
+    currentPage,
 }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -73,7 +74,7 @@ const ModalUpdateUser = ({
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await fetchListUsers();
+            await fetchListUsersWithPaginate(currentPage);
         } else {
             toast.error(data.EM);
         }

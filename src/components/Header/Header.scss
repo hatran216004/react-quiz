@@ -9,3 +9,10 @@
     width: 60px;
     height: 60px;
 }
+
+.header {
+    &-actions {
+        display: flex;
+        align-items: center;
+    }
+}

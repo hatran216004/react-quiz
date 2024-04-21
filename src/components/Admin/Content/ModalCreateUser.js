@@ -6,7 +6,12 @@ import "./ManageUsers.scss";
 import { toast } from "react-toastify";
 import { postCreateNewUser } from "../../../services/apiServices";
 
-const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
+const ModalCreateUser = ({
+    show,
+    setShow,
+    setCurrentPage,
+    fetchListUsersWithPaginate,
+}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -73,7 +78,8 @@ const ModalCreateUser = ({ show, setShow, fetchListUsers }) => {
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await fetchListUsers();
+            setCurrentPage(1);
+            await fetchListUsersWithPaginate(1);
         } else {
             toast.error(data.EM);
         }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ReactPaginate from "react-paginate";
 
 const TableUser = ({
@@ -8,8 +7,11 @@ const TableUser = ({
     handleShowViewUser,
     handleShowDeleteUser,
     fetchListUsersWithPaginate,
+    currentPage,
+    setCurrentPage,
 }) => {
     const handlePageClick = (event) => {
+        setCurrentPage(+event.selected + 1);
         fetchListUsersWithPaginate(+event.selected + 1);
     };
 
@@ -32,7 +34,7 @@ const TableUser = ({
                                 return (
                                     <tr key={index}>
                                         <td className="text-center">
-                                            {index + 1}
+                                            {user.id}
                                         </td>
                                         <td>{user.username}</td>
                                         <td>{user.email}</td>
@@ -54,7 +56,7 @@ const TableUser = ({
                                                     handleShowUpdateUser(user)
                                                 }
                                             >
-                                                Edit user
+                                                Edit
                                             </button>
                                             <button
                                                 className="btn-custom btn-delete"
@@ -89,6 +91,7 @@ const TableUser = ({
                         containerClassName="pagination"
                         activeClassName="active"
                         renderOnZeroPageCount={null}
+                        forcePage={currentPage - 1}
                     />
                 </>
             ) : (
