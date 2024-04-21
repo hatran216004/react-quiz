@@ -5,8 +5,11 @@ import { FaFacebookF, FaGoogle, FaTwitter, FaArrowLeft } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+
 import { postLogin } from "../../services/apiServices";
 import form__bg from "../../assets/img/form-login-bg.jpg";
+import { doLogin } from "../../redux/action/userAction";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -14,6 +17,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
     let navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const validateEmail = (email) => {
         return String(email)
@@ -41,6 +45,8 @@ const Login = () => {
         let res = await postLogin(email, password);
         if (res && res.EC === 0) {
             toast.success(res.EM);
+            dispatch(doLogin(res));
+
             navigate("/");
         } else {
             toast.error(res.EM);
@@ -68,7 +74,9 @@ const Login = () => {
                                     className="form-input"
                                     placeholder="Type your email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) =>
+                                        setEmail(e.target.value.trimStart(" "))
+                                    }
                                 />
                                 <MdOutlineEmail
                                     className="form-icon"

@@ -154,7 +154,7 @@ const Signup = () => {
                     </div>
                     <div className="form-back" onClick={() => navigate("/")}>
                         <FaArrowLeft className="form-back-icon" />
-                        Back Home
+                        Back
                     </div>
                 </div>
             </div>

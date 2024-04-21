@@ -119,3 +119,14 @@ button {
     border-top-right-radius: 999px;
     border-bottom-right-radius: 999px;
 }
+
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 1s 9999s;
+}

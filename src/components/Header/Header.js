@@ -1,10 +1,21 @@
+import "./Header.scss";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate, NavLink } from "react-router-dom";
 import logo from "../../assets/img/logo512.png";
-import "./Header.scss";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+
 const Header = () => {
+    const [active, setActive] = useState(false);
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const account = useSelector((state) => state.user.account);
+
+    console.log("account: ", account);
+    console.log("isAuthenticated: ", isAuthenticated);
+
     let navigate = useNavigate();
 
     const handleLogin = () => {
@@ -31,20 +42,33 @@ const Header = () => {
                         </NavLink>
                     </Nav>
                     <Nav>
-                        <div className="header-actions">
-                            <button
-                                className="btn-custom btn-outline"
-                                onClick={() => handleLogin()}
+                        {!isAuthenticated ? (
+                            <div className="header-actions">
+                                <button
+                                    className="btn-custom btn-outline"
+                                    onClick={() => handleLogin()}
+                                >
+                                    Login
+                                </button>
+                                <button
+                                    className="btn-custom btn-primary"
+                                    onClick={() => navigate("/signup")}
+                                >
+                                    Sign Up
+                                </button>
+                            </div>
+                        ) : (
+                            <NavDropdown
+                                title="Options"
+                                id="basic-nav-dropdown "
+                                active={active}
+                                onClick={() => setActive(true)}
+                                onBlur={() => setActive(false)}
                             >
-                                Login
-                            </button>
-                            <button
-                                className="btn-custom btn-primary"
-                                onClick={() => navigate("/signup")}
-                            >
-                                Sign up
-                            </button>
-                        </div>
+                                <NavDropdown.Item>Logout</NavDropdown.Item>
+                                <NavDropdown.Item>Profile</NavDropdown.Item>
+                            </NavDropdown>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
