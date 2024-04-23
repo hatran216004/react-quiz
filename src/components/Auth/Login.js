@@ -46,12 +46,12 @@ const Login = () => {
         if (res && res.EC === 0) {
             toast.success(res.EM);
             dispatch(doLogin(res));
-
+            setLoading(false);
             navigate("/");
         } else {
             toast.error(res.EM);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
@@ -106,6 +106,7 @@ const Login = () => {
                             Forgot password?
                         </span>
                         <button
+                            disabled={loading}
                             className="form-submit"
                             onClick={(e) => handleLogin(e)}
                         >
