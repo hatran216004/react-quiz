@@ -11,6 +11,7 @@ import { useState } from "react";
 const Header = () => {
     const [active, setActive] = useState(false);
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    // stateRedux => call Reducer => state reducer
     const account = useSelector((state) => state.user.account);
 
     console.log("account: ", account);
@@ -23,7 +24,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary fixed pt-3 pb-3">
+        <Navbar expand="lg" className="bg-body-tertiary fixed pt-2 pb-2">
             <Container>
                 <NavLink to="/" className="navbar-brand me-3">
                     <img src={logo} alt="" className="logo" />
@@ -62,7 +63,7 @@ const Header = () => {
                                 title="Options"
                                 id="basic-nav-dropdown "
                                 active={active}
-                                onClick={() => setActive(true)}
+                                onClick={() => setActive(!active)}
                                 onBlur={() => setActive(false)}
                             >
                                 <NavDropdown.Item>Logout</NavDropdown.Item>
