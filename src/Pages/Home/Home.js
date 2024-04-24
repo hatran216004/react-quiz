@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import hero_video from "../../assets/video/hero.webm";
 import "./Home.scss";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import hero_img from "../../assets/img/hero-img.png";
+import decorate_img from "../../assets/img/decorate.svg";
 
 const Home = () => {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -11,22 +12,17 @@ const Home = () => {
         <section className="hero">
             <div className="hero-inner">
                 <div className="hero-left">
-                    <video
-                        src={hero_video}
-                        autoPlay
-                        muted
-                        loop
-                        className="hero-media"
-                    ></video>
-                </div>
-                <div className="hero-right">
-                    <h1 className="hero-right__heading">
-                        Make forms worth filling out
+                    <div className="hero-left-top">
+                        <button className="hero-left-top-btn">50% OFF</button>
+                        <span>Learn From Today</span>
+                    </div>
+                    <h1 className="hero-left__heading">
+                        Best <span>Learning</span> Platform For Everyone
                     </h1>
-                    <div className="hero-right__desc">
-                        Get more data — like signups, feedback, and anything
-                        else —with forms designed to be
-                        <strong>refreshingly different.</strong>
+                    <div className="hero-left__desc">
+                        Send your email marketing campaign quickly and easily.
+                        Trusted by developers, designers and marketers for
+                        time-savings, scalability and price.
                     </div>
                     {isAuthenticated ? (
                         <button
@@ -43,6 +39,15 @@ const Home = () => {
                             Get started—it's free
                         </button>
                     )}
+                </div>
+                <div className="hero-right">
+                    <div className="hero-right-circle"></div>
+                    <img src={hero_img} alt="" className="hero-right-img" />
+                    <img
+                        src={decorate_img}
+                        alt=""
+                        className="hero-right-decor"
+                    />
                 </div>
             </div>
         </section>

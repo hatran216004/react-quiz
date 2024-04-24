@@ -4,13 +4,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import DefaultLayout from "./Layout/DefaultLayout";
 import Home from "./Pages/Home";
-import UserPage from "./Pages/User";
 import Admin from "./components/Admin";
 import DashBoard from "./components/Admin/Content/DashBoard";
 import ManageUsers from "./components/Admin/Content/ManageUsers";
 import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
-import ListQuiz from "./Pages/User/ListQuiz";
+import ListQuiz from "./components/User/ListQuiz";
+import DetailQuiz from "./components/User/DetailQuiz";
+import NotFound from "./components/NotFound";
 
 const App = () => {
     return (
@@ -20,12 +21,16 @@ const App = () => {
                     <Route index element={<Home />} />
                     <Route path="users" element={<ListQuiz />} />
                 </Route>
+                <Route path="/quiz/:id" element={<DetailQuiz />} />
+
                 <Route path="/admin" element={<Admin />}>
                     <Route index element={<DashBoard />} />
                     <Route path="manage-users" element={<ManageUsers />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+
+                <Route path="*" element={<NotFound />} />
             </Routes>
 
             <ToastContainer

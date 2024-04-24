@@ -21,7 +21,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary pt-2 pb-2">
+        <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
                 <NavLink to="/" className="navbar-brand me-3">
                     <img src={logo} alt="" className="logo" />
