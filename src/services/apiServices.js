@@ -42,3 +42,7 @@ export const postLogin = (email, password) => {
 export const postSignup = (email, username, password) => {
     return axios.post("v1/register", { email, username, password });
 };
+
+export const getQuizByUser = () => {
+    return axios.get("v1/quiz-by-participant");
+};

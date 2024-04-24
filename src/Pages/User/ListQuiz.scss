@@ -1,0 +1,11 @@
+.list-quiz-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}

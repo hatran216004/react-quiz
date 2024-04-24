@@ -14,9 +14,6 @@ const Header = () => {
     // stateRedux => call Reducer => state reducer
     const account = useSelector((state) => state.user.account);
 
-    console.log("account: ", account);
-    console.log("isAuthenticated: ", isAuthenticated);
-
     let navigate = useNavigate();
 
     const handleLogin = () => {
@@ -24,7 +21,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary fixed pt-2 pb-2">
+        <Navbar expand="lg" className="bg-body-tertiary pt-2 pb-2">
             <Container>
                 <NavLink to="/" className="navbar-brand me-3">
                     <img src={logo} alt="" className="logo" />
@@ -59,16 +56,19 @@ const Header = () => {
                                 </button>
                             </div>
                         ) : (
-                            <NavDropdown
-                                title="Options"
-                                id="basic-nav-dropdown "
-                                active={active}
-                                onClick={() => setActive(!active)}
-                                onBlur={() => setActive(false)}
-                            >
-                                <NavDropdown.Item>Logout</NavDropdown.Item>
-                                <NavDropdown.Item>Profile</NavDropdown.Item>
-                            </NavDropdown>
+                            <div className="d-flex align-items-center">
+                                <span>Hi {account.username}</span>
+                                <NavDropdown
+                                    title="Options"
+                                    id="basic-nav-dropdown "
+                                    active={active}
+                                    onClick={() => setActive(!active)}
+                                    onBlur={() => setActive(false)}
+                                >
+                                    <NavDropdown.Item>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                                </NavDropdown>
+                            </div>
                         )}
                     </Nav>
                 </Navbar.Collapse>

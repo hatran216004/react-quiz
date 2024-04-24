@@ -1,7 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import hero_video from "../../assets/video/hero.webm";
 import "./Home.scss";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const navigate = useNavigate();
+
     return (
         <section className="hero">
             <div className="hero-inner">
@@ -23,9 +28,21 @@ const Home = () => {
                         else —with forms designed to be
                         <strong>refreshingly different.</strong>
                     </div>
-                    <button className="btn-custom btn-primary hero-btn">
-                        Get started—it's free
-                    </button>
+                    {isAuthenticated ? (
+                        <button
+                            className="btn-custom btn-primary hero-btn"
+                            onClick={() => navigate("/users")}
+                        >
+                            Let's go boiz
+                        </button>
+                    ) : (
+                        <button
+                            className="btn-custom btn-primary hero-btn"
+                            onClick={() => navigate("/login")}
+                        >
+                            Get started—it's free
+                        </button>
+                    )}
                 </div>
             </div>
         </section>

@@ -65,7 +65,7 @@ const Login = () => {
                     <form action="" autoComplete="off">
                         <div className="form-group">
                             <label htmlFor="email" className="form-label">
-                                Email (testlogin@gmail.com)
+                                Email (user@gmail.com)
                             </label>
                             <div className="form-text-input">
                                 <input
