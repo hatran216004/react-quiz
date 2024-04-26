@@ -1,27 +1,23 @@
 .detail-quiz {
     &-left {
         padding: 20px;
-        border: 1px solid red;
+        background-color: #f2f2f2;
+        border-radius: 18px;
     }
 
     &-right {
-        border: 1px solid blue;
+        background-color: #f2f2f2;
+        border-radius: 18px;
     }
 
     &-title {
-        padding-bottom: 12px;
-        border-bottom: 1px solid #ccc;
-        font-size: 30px;
-        font-weight: 600;
-    }
-
-    &-img {
-        margin: 20px 0;
-    }
-
-    &-question {
+        padding: 12px;
+        border-radius: 8px;
+        background-color: #fff;
+        border: 1px solid #ccc;
         font-size: 20px;
-        font-weight: 600;
+        text-align: center;
+        font-weight: 500;
     }
 
     &-footer {

@@ -1,10 +1,14 @@
 import "./DetailQuiz.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getDataQuiz } from "../../../services/apiServices";
+import Question from "../Question";
 import _ from "lodash";
 
 const DetailQuiz = () => {
+    const [dataQuiz, setDataQuiz] = useState([]);
+    const [currQuestion, setCurrQuestion] = useState(0);
+
     const params = useParams();
     const quizId = params.id;
     const location = useLocation();
@@ -35,35 +39,52 @@ const DetailQuiz = () => {
                     return { questionId: key, answers, questionDesc, image };
                 })
                 .value();
+            setDataQuiz(data);
+        }
+    };
+
+    const handlePrevQuestion = () => {
+        if (currQuestion - 1 < 0) {
+            return;
+        }
+        setCurrQuestion(currQuestion - 1);
+    };
+
+    const handleNextQuestion = () => {
+        if (currQuestion + 1 < dataQuiz.length)
+            setCurrQuestion(currQuestion + 1);
+        else {
+            return;
         }
     };
 
     return (
-        <div className="detail-quiz-container mt-5">
+        <div className="detail-quiz-container mt-3">
             <div className="container">
                 <div className="row">
                     <div className="col-md-8">
                         <div className="detail-quiz-left">
                             <div className="detail-quiz-title">
-                                Quiz: {quizId}. {location?.state?.quizTitle}
+                                Quiz {quizId}. {location?.state?.quizTitle}
                             </div>
-                            <div className="detail-quiz-img">
-                                <img src="" alt="" /> img
-                            </div>
-                            <div className="detail-quiz-info">
-                                <div className="detail-quiz-question">
-                                    Question: 1. ewqe
-                                </div>
-                                <div className="detail-quiz-answer">
-                                    <div>A. qweq</div>
-                                    <div>B. eqwe</div>
-                                </div>
-                            </div>
-                            <div className="detail-quiz-footer">
-                                <button className="btn btn-outline-danger">
+                            <Question
+                                currQuestion={currQuestion}
+                                dataQuiz={
+                                    dataQuiz.length > 0 &&
+                                    dataQuiz[currQuestion]
+                                }
+                            />
+                            <div className="detail-quiz-footer mt-5">
+                                <button
+                                    className="btn-custom question-btn"
+                                    onClick={handlePrevQuestion}
+                                >
                                     Back
                                 </button>
-                                <button className="btn btn-outline-info">
+                                <button
+                                    className="btn-custom question-btn"
+                                    onClick={handleNextQuestion}
+                                >
                                     Next
                                 </button>
                             </div>
