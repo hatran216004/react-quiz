@@ -35,7 +35,7 @@ const ListQuiz = () => {
                                 alt="..."
                             />
                             <div className="card-body">
-                                <h5 className="card-title">Quiz {index + 1}</h5>
+                                <h5 className="card-title">Quiz {item.id}</h5>
                                 <p className="card-text">{item.description}</p>
                                 <button
                                     className="btn-custom btn-primary"
