@@ -2,11 +2,6 @@
     margin-top: 25px;
     user-select: none;
 
-    &-inner {
-        display: flex;
-        align-items: center;
-    }
-
     &-left {
         &__heading {
             max-width: 489px;
@@ -64,7 +59,6 @@
     }
 
     &-right {
-        flex: 1;
         height: 650px;
         position: relative;
 
@@ -90,7 +84,7 @@
             object-fit: cover;
             position: absolute;
             top: 40%;
-            left: 306px;
+            left: 20px;
             transform: translate(0, -50%);
             z-index: 4;
         }
@@ -99,8 +93,9 @@
             width: 85px;
             height: 89px;
             position: absolute;
-            left: 142px;
+            right: 100%;
             bottom: 111px;
+            z-index: 5;
         }
 
         &-circle,

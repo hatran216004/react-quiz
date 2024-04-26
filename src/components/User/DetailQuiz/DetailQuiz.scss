@@ -1,0 +1,31 @@
+.detail-quiz {
+    &-left {
+        padding: 20px;
+        border: 1px solid red;
+    }
+
+    &-right {
+        border: 1px solid blue;
+    }
+
+    &-title {
+        padding-bottom: 12px;
+        border-bottom: 1px solid #ccc;
+        font-size: 30px;
+        font-weight: 600;
+    }
+
+    &-img {
+        margin: 20px 0;
+    }
+
+    &-question {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    &-footer {
+        display: flex;
+        justify-content: center;
+    }
+}
