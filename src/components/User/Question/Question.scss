@@ -34,14 +34,15 @@
     }
 
     &-answer {
-        background-color: #fff;
         padding: 16px;
+        display: block;
+        background-color: #fff;
         border-radius: 8px;
+        border: 1px solid transparent;
         font-size: 18px;
         font-weight: 500;
         cursor: pointer;
         transition: border-color 0.3s;
-        border: 1px solid transparent;
 
         &:hover {
             border-color: #40e0fb;
@@ -53,6 +54,39 @@
 
         & + .question-answer {
             margin-top: 10px;
+        }
+
+        input:checked ~ p::after {
+            display: block;
+        }
+
+        p {
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+
+            &::before {
+                content: "";
+                width: 18px;
+                height: 18px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            &::after {
+                content: "";
+                width: 13px;
+                height: 9px;
+                border: 3px solid;
+                border-color: transparent transparent #0dcece #0dcece;
+                position: absolute;
+                left: 2px;
+                top: 7px;
+                rotate: -45deg;
+                display: none;
+            }
         }
     }
 

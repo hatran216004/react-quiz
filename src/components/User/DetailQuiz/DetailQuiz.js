@@ -22,11 +22,11 @@ const DetailQuiz = () => {
         if (res && res.EC === 0) {
             let raw = res.DT;
             let data = _.chain(raw)
-                .groupBy("id")
+                .groupBy("id") // groupby các obj có id giống nhau vào cùng 1 mảng
                 .map((value, key) => {
-                    // value: array include objects with same id
+                    // value: mỗi mảng gồm các obj có cùng id
                     // key: id
-                    let answers = []; // array include answers
+                    let answers = []; // mảng chứa các câu trl của mỗi obj
                     let questionDesc,
                         image = null;
                     value.forEach((item, index) => {
@@ -34,6 +34,7 @@ const DetailQuiz = () => {
                             questionDesc = item.description;
                             image = item.image;
                         }
+                        item.answers.isSelected = false;
                         answers.push(item.answers);
                     });
                     return { questionId: key, answers, questionDesc, image };
@@ -58,6 +59,34 @@ const DetailQuiz = () => {
         }
     };
 
+    const handleCheckbox = (answerId, questionId) => {
+        let dataQuizClone = _.cloneDeep(dataQuiz); // clone mảng chứa các câu hỏi
+        let question = dataQuizClone.find(
+            // tìm câu hỏi có id trùng với questionId
+            (item) => +item.questionId === +questionId
+        );
+        if (question) {
+            // mảng các câu trả lời sau khi cập nhật isSelected
+            let NewAnswers = question.answers.map((item) => {
+                // tìm phần tử có id trùng với answerId trong mảng answers của question
+                if (answerId === item.id) {
+                    item.isSelected = !item.isSelected;
+                }
+                return item;
+            });
+            question.answers = NewAnswers;
+        }
+        let index = dataQuizClone.findIndex(
+            (item) => +item.questionId === +questionId
+        );
+        if (index > -1) {
+            dataQuizClone[index] = question;
+            setDataQuiz(dataQuizClone);
+        }
+    };
+
+    const handleFinish = () => {};
+
     return (
         <div className="detail-quiz-container mt-3">
             <div className="container">
@@ -68,6 +97,7 @@ const DetailQuiz = () => {
                                 Quiz {quizId}. {location?.state?.quizTitle}
                             </div>
                             <Question
+                                handleCheckbox={handleCheckbox}
                                 currQuestion={currQuestion}
                                 dataQuiz={
                                     dataQuiz.length > 0 &&
@@ -86,6 +116,12 @@ const DetailQuiz = () => {
                                     onClick={handleNextQuestion}
                                 >
                                     Next
+                                </button>
+                                <button
+                                    className="btn-custom btn-primary"
+                                    onClick={handleFinish}
+                                >
+                                    Finish
                                 </button>
                             </div>
                         </div>

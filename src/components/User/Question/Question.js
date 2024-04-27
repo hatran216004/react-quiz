@@ -1,13 +1,19 @@
 import "./Question.scss";
 import _ from "lodash";
 import no_image from "../../../assets/img/no-img.jpg";
+import { useState } from "react";
 
-const Question = ({ currQuestion, dataQuiz }) => {
+const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
+    // const [checked, setChecked] = useState();
+
     if (_.isEmpty(dataQuiz)) {
         return <></>;
     }
 
-    // console.log(dataQuiz);
+    const handleCheckAnswer = (e, answerId, questionId) => {
+        // setChecked(answerId);
+        handleCheckbox(answerId, questionId);
+    };
 
     return (
         <div className="question-wrapper">
@@ -32,21 +38,25 @@ const Question = ({ currQuestion, dataQuiz }) => {
                         {dataQuiz.answers.length > 0 &&
                             dataQuiz.answers.map((item, index) => {
                                 return (
-                                    <div
-                                        key={`answear-${index}`}
+                                    <label
+                                        key={`answer-${index}`}
                                         className="question-answer"
                                     >
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                value=""
-                                            />
-                                            <label className="form-check-label">
-                                                {item.description}
-                                            </label>
-                                        </div>
-                                    </div>
+                                        <input
+                                            hidden
+                                            type="checkbox"
+                                            value=""
+                                            checked={item.isSelected}
+                                            onChange={(e) =>
+                                                handleCheckAnswer(
+                                                    e,
+                                                    item.id,
+                                                    dataQuiz.questionId
+                                                )
+                                            }
+                                        />
+                                        <p>{item.description}</p>
+                                    </label>
                                 );
                             })}
                     </div>
