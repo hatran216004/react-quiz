@@ -1,13 +1,18 @@
 import "./DetailQuiz.scss";
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { getDataQuiz } from "../../../services/apiServices";
-import Question from "../Question";
 import _ from "lodash";
+
+import { getDataQuiz, postSubmitQuiz } from "../../../services/apiServices";
+import Question from "../Question";
+import ModalSubmitQuiz from "../ModalSubmitQuiz";
 
 const DetailQuiz = () => {
     const [dataQuiz, setDataQuiz] = useState([]);
     const [currQuestion, setCurrQuestion] = useState(0);
+
+    const [showModalSubmit, setShowModalSubmit] = useState(false);
+    const [dataResult, setDataResult] = useState();
 
     const params = useParams();
     const quizId = params.id;
@@ -87,16 +92,15 @@ const DetailQuiz = () => {
         }
     };
 
-    const handleSubmitQuiz = () => {
+    const handleSubmitQuiz = async () => {
+        // custom data
         let payload = {
             quizId: +quizId,
             answers: [],
         };
 
         dataQuiz.forEach((question) => {
-            let questionId = +question.questionId; // id của mỗi question
-            let userAnswerId = []; // mảng chứa id các câu trl
-
+            let userAnswerId = []; // mảng chứa id của các câu trl được check
             question.answers.forEach((answer) => {
                 if (answer.isSelected) {
                     userAnswerId.push(answer.id);
@@ -104,61 +108,73 @@ const DetailQuiz = () => {
             });
 
             payload.answers.push({
-                questionId,
+                questionId: +question.questionId, // id của mỗi question
                 userAnswerId,
             });
         });
 
-        console.log(payload);
+        // call api
+        let res = await postSubmitQuiz(payload);
+        if (res && res.EC === 0) {
+            setShowModalSubmit(true);
+            setDataResult(res.DT);
+        }
     };
 
     return (
-        <div className="detail-quiz-container mt-3">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-8">
-                        <div className="detail-quiz-left">
-                            <div className="detail-quiz-title">
-                                Quiz {quizId}. {location?.state?.quizTitle}
-                            </div>
-                            <Question
-                                handleCheckbox={handleCheckbox}
-                                currQuestion={currQuestion}
-                                dataQuiz={
-                                    dataQuiz.length > 0 &&
-                                    dataQuiz[currQuestion]
-                                }
-                            />
-                            <div className="detail-quiz-footer mt-5">
-                                <button
-                                    className="btn-custom question-btn"
-                                    onClick={handlePrevQuestion}
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    className="btn-custom question-btn"
-                                    onClick={handleNextQuestion}
-                                >
-                                    Next
-                                </button>
-                                <button
-                                    className="btn-custom btn-primary"
-                                    onClick={handleSubmitQuiz}
-                                >
-                                    Finish
-                                </button>
+        <>
+            <div className="detail-quiz-container mt-3">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8">
+                            <div className="detail-quiz-left">
+                                <div className="detail-quiz-title">
+                                    Quiz {quizId}. {location?.state?.quizTitle}
+                                </div>
+                                <Question
+                                    handleCheckbox={handleCheckbox}
+                                    currQuestion={currQuestion}
+                                    dataQuiz={
+                                        dataQuiz.length > 0 &&
+                                        dataQuiz[currQuestion]
+                                    }
+                                />
+                                <div className="detail-quiz-footer mt-5">
+                                    <button
+                                        className="btn-custom question-btn"
+                                        onClick={handlePrevQuestion}
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        className="btn-custom question-btn"
+                                        onClick={handleNextQuestion}
+                                    >
+                                        Next
+                                    </button>
+                                    <button
+                                        className="btn-custom btn-primary"
+                                        onClick={handleSubmitQuiz}
+                                    >
+                                        Finish
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="detail-quiz-right">
-                            Detail quiz right
+                        <div className="col-lg-4">
+                            <div className="detail-quiz-right">
+                                Detail quiz right
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <ModalSubmitQuiz
+                show={showModalSubmit}
+                setShow={setShowModalSubmit}
+                dataResult={dataResult ? dataResult : {}}
+            />
+        </>
     );
 };
 

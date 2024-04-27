@@ -1,0 +1,27 @@
+.modal {
+    &-submit-message {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+
+        p {
+            min-width: 180px;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 60px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #32ccbc;
+            font-weight: 600;
+        }
+
+        & + .modal-submit-message {
+            margin-top: 12px;
+        }
+    }
+}

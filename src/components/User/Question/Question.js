@@ -16,7 +16,7 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
 
     return (
         <div className="question-wrapper">
-            <div className="row align-items-center">
+            <div className="row gy-3 align-items-center">
                 <h1 className="question-title">
                     Question {currQuestion + 1}: {dataQuiz.questionDesc} ?
                 </h1>
