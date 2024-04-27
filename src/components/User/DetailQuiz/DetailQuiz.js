@@ -67,14 +67,16 @@ const DetailQuiz = () => {
         );
         if (question) {
             // mảng các câu trả lời sau khi cập nhật isSelected
-            let NewAnswers = question.answers.map((item) => {
+            question.answers = question.answers.map((item) => {
                 // tìm phần tử có id trùng với answerId trong mảng answers của question
                 if (answerId === item.id) {
                     item.isSelected = !item.isSelected;
                 }
+                // else {
+                //     item.isSelected = false;
+                // }
                 return item;
             });
-            question.answers = NewAnswers;
         }
         let index = dataQuizClone.findIndex(
             (item) => +item.questionId === +questionId
@@ -85,7 +87,30 @@ const DetailQuiz = () => {
         }
     };
 
-    const handleFinish = () => {};
+    const handleSubmitQuiz = () => {
+        let payload = {
+            quizId: +quizId,
+            answers: [],
+        };
+
+        dataQuiz.forEach((question) => {
+            let questionId = +question.questionId; // id của mỗi question
+            let userAnswerId = []; // mảng chứa id các câu trl
+
+            question.answers.forEach((answer) => {
+                if (answer.isSelected) {
+                    userAnswerId.push(answer.id);
+                }
+            });
+
+            payload.answers.push({
+                questionId,
+                userAnswerId,
+            });
+        });
+
+        console.log(payload);
+    };
 
     return (
         <div className="detail-quiz-container mt-3">
@@ -119,7 +144,7 @@ const DetailQuiz = () => {
                                 </button>
                                 <button
                                     className="btn-custom btn-primary"
-                                    onClick={handleFinish}
+                                    onClick={handleSubmitQuiz}
                                 >
                                     Finish
                                 </button>

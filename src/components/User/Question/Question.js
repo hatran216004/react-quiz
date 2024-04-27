@@ -10,8 +10,7 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
         return <></>;
     }
 
-    const handleCheckAnswer = (e, answerId, questionId) => {
-        // setChecked(answerId);
+    const handleCheckAnswer = (answerId, questionId) => {
         handleCheckbox(answerId, questionId);
     };
 
@@ -49,7 +48,6 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
                                             checked={item.isSelected}
                                             onChange={(e) =>
                                                 handleCheckAnswer(
-                                                    e,
                                                     item.id,
                                                     dataQuiz.questionId
                                                 )
