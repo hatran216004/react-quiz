@@ -6,16 +6,21 @@ import "./ManageQuiz.scss";
 import "../ManageUsers/ManageUsers.scss";
 import { toast } from "react-toastify";
 import Select from "react-select";
+import { postCreateNewQuiz } from "../../../../services/apiServices";
 
 const ModalCreateQuiz = ({ show, setShow }) => {
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    const [type, setType] = useState("EASY");
+    const [type, setType] = useState();
     const [image, setImage] = useState();
 
     // close modal
     const handleClose = () => {
         setShow(false);
+        setName("");
+        setDesc("");
+        setType();
+        setImage();
     };
 
     const options = [
@@ -24,10 +29,32 @@ const ModalCreateQuiz = ({ show, setShow }) => {
         { value: "HARD", label: "HARD" },
     ];
 
-    const handleUploadImage = (e) => {};
+    useEffect(() => {
+        return () => {
+            image && URL.revokeObjectURL(image.preview);
+        };
+    }, [image]);
 
-    const handleChange = (selectedOption) => {
-        console.log(selectedOption);
+    const handleUploadImage = (e) => {
+        const file = e.target.files[0];
+        file.preview = URL.createObjectURL(file);
+        setImage(file);
+    };
+
+    const handleSubmitQuiz = async () => {
+        let res = await postCreateNewQuiz(desc, name, type?.value, image);
+        if (!name && !desc) {
+            toast.error("Name / Description is requird!");
+            return;
+        }
+
+        if (res && res.EC === 0) {
+            console.log(res);
+            toast.success(res.EM);
+            handleClose();
+        } else {
+            toast.error(res.EM);
+        }
     };
 
     return (
@@ -76,8 +103,8 @@ const ModalCreateQuiz = ({ show, setShow }) => {
                         </label>
                         <Select
                             options={options}
-                            value={type}
-                            onChange={() => handleChange(type)}
+                            defaultValue={type}
+                            onChange={setType}
                         />
                     </div>
                     <div className="col-md-12">
@@ -92,7 +119,6 @@ const ModalCreateQuiz = ({ show, setShow }) => {
                             type="file"
                             hidden
                             id="upload"
-                            value={image}
                             onChange={(e) => handleUploadImage(e)}
                         />
                     </div>
@@ -109,7 +135,7 @@ const ModalCreateQuiz = ({ show, setShow }) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
+                <Button variant="primary" onClick={handleSubmitQuiz}>
                     Save
                 </Button>
             </Modal.Footer>

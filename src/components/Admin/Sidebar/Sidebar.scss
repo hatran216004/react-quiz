@@ -2,12 +2,11 @@
     height: 100vh;
 
     &-header {
-        padding: 9px;
+        padding: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 20px;
-        border-bottom: 1px solid #ccc;
         &-icon {
             color: #00ffff;
             font-size: 38px;
@@ -69,4 +68,8 @@
     .pro-inner-list-item
     .pro-inner-item {
     padding: 12px 40px;
+}
+
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout .pro-sidebar-header {
+    border-bottom: 1px solid rgba(173, 173, 173, 0.5);
 }
