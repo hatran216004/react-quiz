@@ -34,11 +34,11 @@ const Sidebar = ({ collapsed, toggled }) => {
             {/* Header */}
             <SidebarHeader>
                 <Menu iconShape="circle">
-                    <MenuItem
-                        icon={<FaReact className="sidebar-header-icon" />}
-                    >
-                        <div className="sidebar-header">React Quiz</div>
-                    </MenuItem>
+                    <div className="sidebar-header">
+                        <FaReact className="sidebar-header-icon" />
+                        <h3 className="sidebar-title">React Quiz</h3>
+                        <Link to="/" />
+                    </div>
                 </Menu>
             </SidebarHeader>
             {/* Content */}
@@ -52,7 +52,9 @@ const Sidebar = ({ collapsed, toggled }) => {
                         <MenuItem>
                             Manage Users <Link to="/admin/manage-users" />
                         </MenuItem>
-                        <MenuItem>Manage Quiz Test</MenuItem>
+                        <MenuItem>
+                            Manage Quiz Test <Link to="/admin/manage-quiz" />
+                        </MenuItem>
                         <MenuItem>Manage Questions</MenuItem>
                     </SubMenu>
                     <SubMenu title={"With Suffi"} icon={<FaHeart />}>
@@ -72,11 +74,10 @@ const Sidebar = ({ collapsed, toggled }) => {
             </SidebarContent>
             {/* Footer */}
             <SidebarFooter style={{ textAlign: "center" }}>
-                <div className="sidebar-btn-wrapper">
-                    <Link className="sidebar-btn" to="/">
-                        <FaUser />
-                        <span>Ha Tran</span>
-                    </Link>
+                <div className="sidebar-footer">
+                    <FaUser />
+                    <span>Ha Tran</span>
+                    <Link to="/" />
                 </div>
             </SidebarFooter>
         </ProSidebar>

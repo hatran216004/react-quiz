@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./ManageUsers.scss";
 import TableUser from "./TableUser";
-import { getUserWithPaginate } from "../../../services/apiServices";
+import { getUserWithPaginate } from "../../../../services/apiServices";
 import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
@@ -55,7 +55,7 @@ const ManageUsers = () => {
             <div className="users-content">
                 <div className="d-flex">
                     <button
-                        className="btn-custom btn-add-user ms-auto"
+                        className="btn-custom btn-add-new ms-auto"
                         onClick={() => setShowModalCreateUser(true)}
                     >
                         Add new user

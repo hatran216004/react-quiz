@@ -1,20 +1,16 @@
-import "./ManageUsers.scss";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import "./ManageUsers.scss";
 import { toast } from "react-toastify";
-import _ from "lodash";
+import { postCreateNewUser } from "../../../../services/apiServices";
 
-import { putUpdateUser } from "../../../services/apiServices";
-
-const ModalUpdateUser = ({
+const ModalCreateUser = ({
     show,
     setShow,
-    dataUpdate,
-    setdataUpdate,
+    setCurrentPage,
     fetchListUsersWithPaginate,
-    currentPage,
 }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,23 +18,6 @@ const ModalUpdateUser = ({
     const [role, setRole] = useState("USER");
     const [avatar, setAvatar] = useState(); // preview image
     const [image, setImage] = useState();
-
-    useEffect(() => {
-        // dataUpdate no empty
-        if (!_.isEmpty(dataUpdate)) {
-            setEmail(dataUpdate.email);
-            setUsername(dataUpdate.username);
-            setRole(dataUpdate.role);
-
-            if (dataUpdate.image) {
-                const newImage = {
-                    preview: `data:image/jpeg;base64,${dataUpdate.image}`,
-                };
-
-                setAvatar(newImage);
-            }
-        }
-    }, [dataUpdate]);
 
     // Cleanup file image
     useEffect(() => {
@@ -56,7 +35,6 @@ const ModalUpdateUser = ({
         setRole("USER");
         setAvatar();
         setImage();
-        setdataUpdate({});
     };
 
     // Handle upload image
@@ -67,14 +45,41 @@ const ModalUpdateUser = ({
         setImage(e.target.files[0]);
     };
 
-    const handleSubmitUpdateUser = async () => {
-        // call api to update user
-        let data = await putUpdateUser(dataUpdate.id, username, role, image);
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
+    const handleSubmitCreateUser = async () => {
+        // validate
+        const isValidEmail = validateEmail(email);
+        if (!isValidEmail) {
+            toast.error("Please enter a valid emal address!");
+            return;
+        }
+
+        if (!password) {
+            toast.error("Please enter your password!");
+            return;
+        }
+
+        // call api to create user
+        let data = await postCreateNewUser(
+            email,
+            password,
+            username,
+            role,
+            image
+        );
 
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await fetchListUsersWithPaginate(currentPage);
+            setCurrentPage(1);
+            await fetchListUsersWithPaginate(1);
         } else {
             toast.error(data.EM);
         }
@@ -89,7 +94,7 @@ const ModalUpdateUser = ({
             className="modal-add-user"
         >
             <Modal.Header closeButton>
-                <Modal.Title>Update user</Modal.Title>
+                <Modal.Title>Add new user</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form className="row g-3">
@@ -98,7 +103,6 @@ const ModalUpdateUser = ({
                             Email
                         </label>
                         <input
-                            disabled
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email"
@@ -111,7 +115,6 @@ const ModalUpdateUser = ({
                             Password
                         </label>
                         <input
-                            disabled
                             autoComplete="off"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -178,13 +181,13 @@ const ModalUpdateUser = ({
                 </Button>
                 <Button
                     variant="primary"
-                    onClick={() => handleSubmitUpdateUser()}
+                    onClick={() => handleSubmitCreateUser()}
                 >
-                    Save changes
+                    Save
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default ModalUpdateUser;
+export default ModalCreateUser;

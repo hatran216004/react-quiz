@@ -7,6 +7,7 @@ import Home from "./Pages/Home";
 import Admin from "./components/Admin";
 import DashBoard from "./components/Admin/Content/DashBoard";
 import ManageUsers from "./components/Admin/Content/ManageUsers";
+import ManageQuiz from "./components/Admin/Content/ManageQuiz";
 import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
 import ListQuiz from "./components/User/ListQuiz";
@@ -26,6 +27,7 @@ const App = () => {
                 <Route path="/admin" element={<Admin />}>
                     <Route index element={<DashBoard />} />
                     <Route path="manage-users" element={<ManageUsers />} />
+                    <Route path="manage-quiz" element={<ManageQuiz />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
