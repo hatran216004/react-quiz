@@ -65,3 +65,27 @@ export const postCreateNewQuiz = (desc, name, difficulty, image) => {
 
     return axios.post("v1/quiz", data);
 };
+
+export const getAllQuizForAdmin = () => {
+    return axios.get(`v1/quiz/all`);
+};
+
+export const deleteQuiz = (id) => {
+    return axios.delete(`v1/quiz/${id}`);
+};
+
+export const putUpdateQuiz = (id, name, desc, difficulty, image) => {
+    // update data
+    const data = new FormData();
+    data.append("id", id);
+    data.append("description", desc);
+    data.append("name", name);
+    data.append("difficulty", difficulty);
+    data.append("quizImage", image);
+
+    return axios.put("v1/quiz", data);
+};
+
+export const getQuizWithPaginate = (page, limit) => {
+    return axios.get(`v1/participant?page=${page}&limit=${limit}`);
+};

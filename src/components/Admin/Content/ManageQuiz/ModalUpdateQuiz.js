@@ -6,13 +6,39 @@ import "./ManageQuiz.scss";
 import "../ManageUsers/ManageUsers.scss";
 import { toast } from "react-toastify";
 import Select from "react-select";
-import { postCreateNewQuiz } from "../../../../services/apiServices";
+import { putUpdateQuiz } from "../../../../services/apiServices";
+import _ from "lodash";
 
-const ModalCreateQuiz = ({ show, setShow }) => {
+const ModalUpdateQuiz = ({
+    show,
+    setShow,
+    dataUpdate,
+    setDataUpdate,
+    fetchListQuiz,
+}) => {
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    const [type, setType] = useState();
+    const [type, setType] = useState("");
     const [image, setImage] = useState();
+
+    useEffect(() => {
+        return () => {
+            image && URL.revokeObjectURL(image.preview);
+        };
+    }, [image]);
+
+    useEffect(() => {
+        if (!_.isEmpty(dataUpdate)) {
+            setName(dataUpdate.name);
+            setDesc(dataUpdate.description);
+            setType(dataUpdate.difficulty);
+
+            const newImage = {
+                preview: `data:image/jpeg;base64,${dataUpdate.image}`,
+            };
+            setImage(newImage);
+        }
+    }, [dataUpdate]);
 
     // close modal
     const handleClose = () => {
@@ -21,6 +47,7 @@ const ModalCreateQuiz = ({ show, setShow }) => {
         setDesc("");
         setType();
         setImage();
+        setDataUpdate({});
     };
 
     const options = [
@@ -29,29 +56,30 @@ const ModalCreateQuiz = ({ show, setShow }) => {
         { value: "HARD", label: "HARD" },
     ];
 
-    useEffect(() => {
-        return () => {
-            image && URL.revokeObjectURL(image.preview);
-        };
-    }, [image]);
-
     const handleUploadImage = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
         setImage(file);
     };
 
-    const handleSubmitQuiz = async () => {
-        let res = await postCreateNewQuiz(desc, name, type?.value, image);
-        if (!name && !desc) {
-            toast.error("Name / Description is requird!");
+    const handleUpdateQuiz = async () => {
+        if (typeof type === "string") {
+            toast.error("Please select difficult of quiz!");
             return;
         }
 
+        let res = await putUpdateQuiz(
+            dataUpdate.id,
+            name,
+            desc,
+            type.value,
+            image
+        );
+
         if (res && res.EC === 0) {
-            console.log(res);
             toast.success(res.EM);
             handleClose();
+            fetchListQuiz();
         } else {
             toast.error(res.EM);
         }
@@ -66,7 +94,7 @@ const ModalCreateQuiz = ({ show, setShow }) => {
             className="modal-add-user"
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add new quiz</Modal.Title>
+                <Modal.Title>Update quiz</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form className="row g-3">
@@ -132,15 +160,12 @@ const ModalCreateQuiz = ({ show, setShow }) => {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={handleSubmitQuiz}>
-                    Save
+                <Button variant="primary" onClick={handleUpdateQuiz}>
+                    Save changes
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default ModalCreateQuiz;
+export default ModalUpdateQuiz;

@@ -31,7 +31,7 @@ const ModalDeleteUser = ({
                 <Modal.Title>Delete User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                Are you sure to delete this user with email:{" "}
+                Are you sure to delete this user with email:
                 <b>{dataDelete && dataDelete.email}</b>?
             </Modal.Body>
             <Modal.Footer>
