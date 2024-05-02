@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     ProSidebar,
     Menu,
@@ -12,33 +12,48 @@ import {
     FaUser,
     FaTachometerAlt,
     FaGem,
-    FaList,
-    FaHeart,
     FaReact,
+    FaAngleDoubleRight,
+    FaAngleDoubleLeft,
 } from "react-icons/fa";
 import { GrUserManager } from "react-icons/gr";
 import "react-pro-sidebar/dist/css/styles.css";
 
 import sidebarBg from "../../../assets/img/sidebar-bg.jpg";
 import "./Sidebar.scss";
+import { useState } from "react";
 
-const Sidebar = ({ collapsed, toggled }) => {
+const Sidebar = () => {
+    const [collapsed, setCollapsed] = useState(false);
+    const navigate = useNavigate();
+
     return (
         <ProSidebar
             className="sidebar"
             image={sidebarBg}
             collapsed={collapsed}
-            toggled={toggled}
+            toggled
             breakPoint="md"
         >
             {/* Header */}
             <SidebarHeader>
                 <Menu iconShape="circle">
-                    <div className="sidebar-header">
-                        <FaReact className="sidebar-header-icon" />
-                        <h3 className="sidebar-title">React Quiz</h3>
-                        <Link to="/" />
-                    </div>
+                    {collapsed ? (
+                        <MenuItem
+                            icon={<FaAngleDoubleRight />}
+                            onClick={() => setCollapsed(!collapsed)}
+                        ></MenuItem>
+                    ) : (
+                        <MenuItem
+                            suffix={<FaAngleDoubleLeft />}
+                            onClick={() => setCollapsed(!collapsed)}
+                        >
+                            <div className="sidebar-header">
+                                <FaReact className="sidebar-header-icon" />
+                                <h3 className="sidebar-title">React Quiz</h3>
+                            </div>
+                        </MenuItem>
+                    )}
                 </Menu>
             </SidebarHeader>
             {/* Content */}
@@ -55,29 +70,21 @@ const Sidebar = ({ collapsed, toggled }) => {
                         <MenuItem>
                             Manage Quiz Test <Link to="/admin/manage-quiz" />
                         </MenuItem>
-                        <MenuItem>Manage Questions</MenuItem>
-                    </SubMenu>
-                    <SubMenu title={"With Suffi"} icon={<FaHeart />}>
-                        <MenuItem>Submenu 1</MenuItem>
-                        <MenuItem>Submenu 2</MenuItem>
-                        <MenuItem>Submenu 3</MenuItem>
-                    </SubMenu>
-                    <SubMenu title={"Multi Level"} icon={<FaList />}>
-                        <MenuItem>Submenu 1 </MenuItem>
-                        <MenuItem>Submenu 2 </MenuItem>
-                        <SubMenu title={"Submenu 3"}>
-                            <MenuItem>Submenu 3.1 </MenuItem>
-                            <MenuItem>Submenu 3.2 </MenuItem>
-                        </SubMenu>
+                        <MenuItem>
+                            Manage Questions
+                            <Link to="/admin/manage-questions" />
+                        </MenuItem>
                     </SubMenu>
                 </Menu>
             </SidebarContent>
             {/* Footer */}
-            <SidebarFooter style={{ textAlign: "center" }}>
+            <SidebarFooter
+                style={{ textAlign: "center" }}
+                onClick={() => navigate("/")}
+            >
                 <div className="sidebar-footer">
                     <FaUser />
-                    <span>Ha Tran</span>
-                    <Link to="/" />
+                    <span>Home</span>
                 </div>
             </SidebarFooter>
         </ProSidebar>

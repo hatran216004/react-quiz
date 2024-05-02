@@ -106,7 +106,7 @@ const CreateQuiz = ({ fetchListQuiz }) => {
                             <FaCloudUploadAlt className="modal-upload-icon" />
                             Upload image
                         </label>
-                        <div className="img-preview-quiz">
+                        <div className="img-preview-quiz img-preview-quiz-bg">
                             {image ? (
                                 <img src={image.preview} alt="" />
                             ) : (

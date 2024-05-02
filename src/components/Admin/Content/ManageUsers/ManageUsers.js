@@ -52,7 +52,7 @@ const ManageUsers = () => {
     return (
         <div className="manage-users-container">
             <h1 className="manage-users-title">Manage Users</h1>
-            <div className="users-content">
+            <div className="manage-users-content">
                 <div className="d-flex">
                     <button
                         className="btn-custom btn-add-new ms-auto"
@@ -61,18 +61,16 @@ const ManageUsers = () => {
                         Add new user
                     </button>
                 </div>
-                <div className="table-user-wrapper">
-                    <TableUser
-                        listUsers={listUsers}
-                        handleShowUpdateUser={handleShowUpdateUser}
-                        handleShowViewUser={handleShowViewUser}
-                        handleShowDeleteUser={handleShowDeleteUser}
-                        fetchListUsersWithPaginate={fetchListUsersWithPaginate}
-                        pageCount={pageCount}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                    />
-                </div>
+                <TableUser
+                    listUsers={listUsers}
+                    handleShowUpdateUser={handleShowUpdateUser}
+                    handleShowViewUser={handleShowViewUser}
+                    handleShowDeleteUser={handleShowDeleteUser}
+                    fetchListUsersWithPaginate={fetchListUsersWithPaginate}
+                    pageCount={pageCount}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
                 <ModalCreateUser
                     show={showModalCreateUser}
                     setShow={setShowModalCreateUser}

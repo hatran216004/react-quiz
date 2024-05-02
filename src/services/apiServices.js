@@ -85,7 +85,3 @@ export const putUpdateQuiz = (id, name, desc, difficulty, image) => {
 
     return axios.put("v1/quiz", data);
 };
-
-export const getQuizWithPaginate = (page, limit) => {
-    return axios.get(`v1/participant?page=${page}&limit=${limit}`);
-};

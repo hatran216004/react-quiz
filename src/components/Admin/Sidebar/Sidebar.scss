@@ -2,18 +2,30 @@
     height: 100vh;
 
     &-header {
-        padding: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 20px;
+
         &-icon {
             color: #00ffff;
             font-size: 38px;
         }
     }
 
+    &-icon-toggle {
+        color: #999;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
     &-title {
+        padding: 9px;
         font-size: 16px;
         text-transform: uppercase;
         font-weight: bold;
@@ -51,11 +63,6 @@
     > .pro-inner-item
     > .pro-icon-wrapper {
     background-color: transparent;
-}
-
-// background menu item hover
-.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:hover {
-    background-color: rgba($color: #fff, $alpha: 0.2);
 }
 
 .pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu .pro-inner-list-item {

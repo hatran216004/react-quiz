@@ -43,6 +43,7 @@
         font-weight: 500;
         cursor: pointer;
         transition: border-color 0.3s;
+        user-select: none;
 
         &:hover {
             border-color: #40e0fb;

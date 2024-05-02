@@ -17,6 +17,7 @@ const DetailQuiz = () => {
     const params = useParams();
     const quizId = params.id;
     const location = useLocation();
+    console.log(location);
 
     useEffect(() => {
         fetchQuestion();

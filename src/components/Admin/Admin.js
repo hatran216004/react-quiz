@@ -1,27 +1,24 @@
 import "./Admin.scss";
-import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { FaBars } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import image_admin from "../../assets/img/quiz-img-1.jpg";
 
 const Admin = () => {
-    const [collapsed, setCollapsed] = useState(false);
-
     return (
         <div className="admin-container">
-            <Sidebar collapsed={collapsed} />
+            <Sidebar />
 
-            <div className="admin-content">
-                <div className="admin-header">
-                    <FaBars
-                        className="admin-icon-toggle"
-                        onClick={() => setCollapsed(!collapsed)}
-                    />
-                </div>
-
-                <div className="admin-main">
-                    <Outlet />
-                </div>
+            <div className="admin-content container">
+                {/* <div className="admin-header">
+                    <img src={image_admin} alt="" />
+                </div> */}
+                <PerfectScrollbar>
+                    <div className="admin-main">
+                        <Outlet />
+                    </div>
+                </PerfectScrollbar>
             </div>
         </div>
     );

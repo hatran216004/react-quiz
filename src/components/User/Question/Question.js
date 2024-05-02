@@ -1,7 +1,6 @@
 import "./Question.scss";
 import _ from "lodash";
 import no_image from "../../../assets/img/no-img.jpg";
-import { useState } from "react";
 
 const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
     // const [checked, setChecked] = useState();
@@ -10,9 +9,9 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
         return <></>;
     }
 
-    const handleCheckAnswer = (answerId, questionId) => {
-        handleCheckbox(answerId, questionId);
-    };
+    // const handleCheckAnswer = (answerId, questionId) => {
+    //     handleCheckbox(answerId, questionId);
+    // };
 
     return (
         <div className="question-wrapper">
@@ -46,8 +45,8 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
                                             type="checkbox"
                                             value=""
                                             checked={item.isSelected}
-                                            onChange={(e) =>
-                                                handleCheckAnswer(
+                                            onChange={() =>
+                                                handleCheckbox(
                                                     item.id,
                                                     dataQuiz.questionId
                                                 )
