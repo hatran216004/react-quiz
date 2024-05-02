@@ -1,10 +1,10 @@
-import "./ManageQuiz.scss";
-import { useState, useEffect } from "react";
-import CreateQuiz from "./CreateQuiz";
+import './ManageQuiz.scss';
+import { useState, useEffect } from 'react';
+import CreateQuiz from './CreateQuiz';
 
-import TableQuiz from "./TableQuiz";
-import { getAllQuizForAdmin } from "../../../../services/apiServices";
-import Accordion from "react-bootstrap/Accordion";
+import TableQuiz from './TableQuiz';
+import { getAllQuizForAdmin } from '../../../../services/apiServices';
+import Accordion from 'react-bootstrap/Accordion';
 
 const ManageQuiz = () => {
     const [listQuiz, setListQuiz] = useState([]);
@@ -27,9 +27,7 @@ const ManageQuiz = () => {
                 <Accordion className="mt-3">
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>
-                            <h3 className="manage-quiz-heading">
-                                Add new quiz
-                            </h3>
+                            <h3 className="manage-quiz-heading">Add new quiz</h3>
                         </Accordion.Header>
                         <Accordion.Body className="manage-quiz-add-content">
                             <CreateQuiz fetchListQuiz={fetchListQuiz} />

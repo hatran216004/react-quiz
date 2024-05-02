@@ -1,5 +1,6 @@
 import './Questions.scss';
 import '../../../User/Question/Question.scss';
+
 import { FaImage } from 'react-icons/fa';
 import { FaCirclePlus, FaCircleMinus } from 'react-icons/fa6';
 import { CiCirclePlus, CiCircleMinus } from 'react-icons/ci';
@@ -7,10 +8,13 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
+import 'lightgallery/scss/lightgallery.scss';
+import 'lightgallery/scss/lg-zoom.scss';
+import LightGallery from 'lightgallery/react';
+import lgZoom from 'lightgallery/plugins/zoom';
 
 const Questions = () => {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
-    const [image, setImage] = useState();
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
@@ -35,26 +39,22 @@ const Questions = () => {
 
     // useEffect(() => {
     //     return () => {
-    //         image && URL.revokeObjectURL(image.preview);
+    //         URL.revokeObjectURL();
     //     };
-    // }, [image]);
+    // }, []);
 
     const handleUploadImage = (e, idQuestion) => {
         let questionsClone = _.cloneDeep(questions);
-
         const question = questionsClone.find((item) => {
             return item.id === idQuestion;
         });
 
-        if (question && e.target.files[0]) {
-            const file = e.target.files[0];
-            // file.preview = URL.createObjectURL(file);
-            // setImage(file);
-            e.target.value = null;
-
+        const file = e.target.files[0];
+        if (question && file) {
             question.imageFile = file;
             question.imageName = file.name;
             setQuestions(questionsClone);
+            e.target.value = null;
         }
     };
 
@@ -92,7 +92,6 @@ const Questions = () => {
 
     const handleAddRemoveAnswer = (type, idQuestion, idAnswer) => {
         let questionsClone = _.cloneDeep(questions);
-
         switch (type) {
             case 'ADD': {
                 const question = questionsClone.find((item) => {
@@ -151,7 +150,6 @@ const Questions = () => {
 
     const handleAnswerQuestion = (e, type, idQuestion, idAnswer) => {
         let questionsClone = _.cloneDeep(questions);
-
         const question = questionsClone.find((item) => {
             return item.id === idQuestion;
         });
@@ -276,20 +274,28 @@ const Questions = () => {
                                         </div>
                                     </div>
 
-                                    <div className="form-preview-image align-self-center">
+                                    <div className="form-preview-image align-items-center">
                                         <label
                                             className="form-label modal-btn-upload manage-questions-upload"
                                             htmlFor={question.id}
                                         >
                                             <FaImage className="modal-upload-icon" color="blueviolet" />
-                                            {image ? 'Preview image' : 'Upload image'}
+                                            Upload image
                                         </label>
-                                        {/* <div className="img-preview-quiz img-preview-quiz-bg">
-                                            {image ? <img src={image.preview} alt="" /> : <span>Preview image</span>}
-                                        </div> */}
-                                        <p className="clip-text">
-                                            {question.imageName ? question.imageName : 'No images have been uploaded'}
-                                        </p>
+
+                                        {question.imageFile ? (
+                                            <LightGallery speed={500} plugins={[lgZoom]}>
+                                                <a href={URL.createObjectURL(question.imageFile)}>
+                                                    <img
+                                                        alt={question.imageName}
+                                                        src={URL.createObjectURL(question.imageFile)}
+                                                        className="img-preview-quiz"
+                                                    />
+                                                </a>
+                                            </LightGallery>
+                                        ) : (
+                                            <p className="clip-text">No images have been uploaded</p>
+                                        )}
                                         <input
                                             type="file"
                                             hidden
@@ -313,6 +319,7 @@ const Questions = () => {
                                 </form>
                             );
                         })}
+
                     <button className="btn-custom btn-primary ms-auto mt-3" onClick={handleSubmitQuestions}>
                         Save
                     </button>

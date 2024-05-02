@@ -19,6 +19,7 @@
     }
 
     &-form {
+        min-height: 304px;
         margin-top: 20px;
         padding: 20px;
 
@@ -39,7 +40,6 @@
     }
 
     &-upload {
-        margin: 0 auto;
         max-width: 220px;
 
         display: flex;
@@ -50,7 +50,7 @@
         background-color: #fff;
         border: 1px solid #ccc;
 
-        & + p {
+        & ~ p {
             color: #888;
             text-align: center;
         }
