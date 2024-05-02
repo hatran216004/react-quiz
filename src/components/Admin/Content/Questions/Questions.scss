@@ -20,10 +20,10 @@
 
     &-form {
         margin-top: 20px;
-        padding: 14px;
+        padding: 20px;
 
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 2fr 1fr 0.25fr;
 
         border: 1px solid #ccc;
         border-radius: 8px;
@@ -38,8 +38,26 @@
         }
     }
 
+    &-upload {
+        margin: 0 auto;
+        max-width: 220px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #888;
+        background-color: #fff;
+        border: 1px solid #ccc;
+
+        & + p {
+            color: #888;
+            text-align: center;
+        }
+    }
+
     &-actions {
-        margin-left: 60px;
+        margin-left: auto;
         font-size: 36px;
         display: flex;
         flex-direction: column;
@@ -61,7 +79,7 @@
         margin-top: 14px;
     }
 
-    &-desc {
+    &-checkbox {
         padding: 0;
 
         &:hover {
@@ -81,7 +99,7 @@
 
     &-input {
         background-color: #fff;
-        padding: 0 20px;
+        padding: 0 16px;
         border: 1px solid #ccc;
         border-radius: 6px;
         font-size: 14px;

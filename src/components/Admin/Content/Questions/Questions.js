@@ -1,6 +1,6 @@
 import './Questions.scss';
 import '../../../User/Question/Question.scss';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaImage } from 'react-icons/fa';
 import { FaCirclePlus, FaCircleMinus } from 'react-icons/fa6';
 import { CiCirclePlus, CiCircleMinus } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
@@ -14,13 +14,13 @@ const Questions = () => {
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
-            desc: 'description 1',
+            desc: '',
             imageFile: '',
             imageName: '',
             answers: [
                 {
                     id: uuidv4(),
-                    desc: 'answer 1',
+                    desc: '',
                     isCorrect: false,
                 },
             ],
@@ -33,17 +33,29 @@ const Questions = () => {
         { value: 'vanilla', label: 'Vanilla' },
     ];
 
-    useEffect(() => {
-        return () => {
-            image && URL.revokeObjectURL(image.preview);
-        };
-    }, [image]);
+    // useEffect(() => {
+    //     return () => {
+    //         image && URL.revokeObjectURL(image.preview);
+    //     };
+    // }, [image]);
 
-    const handleUploadImage = (e) => {
-        const file = e.target.files[0];
-        file.preview = URL.createObjectURL(file);
-        setImage(file);
-        e.target.value = null;
+    const handleUploadImage = (e, idQuestion) => {
+        let questionsClone = _.cloneDeep(questions);
+
+        const question = questionsClone.find((item) => {
+            return item.id === idQuestion;
+        });
+
+        if (question && e.target.files[0]) {
+            const file = e.target.files[0];
+            // file.preview = URL.createObjectURL(file);
+            // setImage(file);
+            e.target.value = null;
+
+            question.imageFile = file;
+            question.imageName = file.name;
+            setQuestions(questionsClone);
+        }
     };
 
     const handleAddRemoveQuestion = (type, idQuestion) => {
@@ -86,15 +98,16 @@ const Questions = () => {
                 const question = questionsClone.find((item) => {
                     return item.id === idQuestion;
                 });
-                const newAnswer = {
-                    id: uuidv4(),
-                    desc: '',
-                    isCorrect: false,
-                };
 
-                question.answers.push(newAnswer);
-                setQuestions(questionsClone);
-
+                if (question) {
+                    const newAnswer = {
+                        id: uuidv4(),
+                        desc: '',
+                        isCorrect: false,
+                    };
+                    question.answers.push(newAnswer);
+                    setQuestions(questionsClone);
+                }
                 break;
             }
             case 'REMOVE': {
@@ -102,16 +115,65 @@ const Questions = () => {
                     return item.id === idQuestion;
                 });
 
-                question.answers = question.answers.filter((answer) => {
-                    return answer.id !== idAnswer;
-                });
-
-                setQuestions(questionsClone);
+                if (question) {
+                    question.answers = question.answers.filter((answer) => {
+                        return answer.id !== idAnswer;
+                    });
+                    setQuestions(questionsClone);
+                }
                 break;
             }
             default:
                 return;
         }
+    };
+
+    const handleOnChange = (e, type, idQuestion) => {
+        switch (type) {
+            case 'QUESTION': {
+                let questionsClone = _.cloneDeep(questions);
+                const question = questionsClone.find((item) => {
+                    return item.id === idQuestion;
+                });
+                if (question) {
+                    question.desc = e.target.value;
+                    setQuestions(questionsClone);
+                }
+                break;
+            }
+            case 'ANSWERS': {
+                break;
+            }
+            default:
+                return;
+        }
+    };
+
+    const handleAnswerQuestion = (e, type, idQuestion, idAnswer) => {
+        let questionsClone = _.cloneDeep(questions);
+
+        const question = questionsClone.find((item) => {
+            return item.id === idQuestion;
+        });
+
+        if (question) {
+            question.answers = question.answers.map((answer) => {
+                if (answer.id === idAnswer) {
+                    if (type === 'CHECKBOX') {
+                        !answer.isCorrect ? (answer.isCorrect = true) : (answer.isCorrect = false);
+                    }
+                    if (type === 'INPUT') {
+                        answer.desc = e.target.value;
+                    }
+                }
+                return answer;
+            });
+        }
+        setQuestions(questionsClone);
+    };
+
+    const handleSubmitQuestions = () => {
+        console.log(questions);
     };
 
     return (
@@ -146,6 +208,8 @@ const Questions = () => {
                                                     id="input-quiz-desc"
                                                     type="text"
                                                     value={question.desc}
+                                                    onChange={(e) => handleOnChange(e, 'QUESTION', question.id)}
+                                                    placeholder="Enter your description..."
                                                 />
                                             </div>
                                         </div>
@@ -155,15 +219,38 @@ const Questions = () => {
                                                 question.answers.map((answer) => {
                                                     return (
                                                         <div className="manage-answers-item" key={answer.id}>
-                                                            <label className="question-answer manage-answers-item-desc">
-                                                                <input hidden type="checkbox" value="" />
+                                                            <div
+                                                                className="question-answer manage-answers-item-checkbox"
+                                                                onClick={(e) =>
+                                                                    handleAnswerQuestion(
+                                                                        e,
+                                                                        'CHECKBOX',
+                                                                        question.id,
+                                                                        answer.id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    hidden
+                                                                    checked={answer.isCorrect}
+                                                                    readOnly
+                                                                />
                                                                 <p></p>
-                                                            </label>
+                                                            </div>
                                                             <input
                                                                 type="text"
                                                                 className="manage-answers-item-input"
                                                                 placeholder="Enter your answer..."
                                                                 value={answer.desc}
+                                                                onChange={(e) =>
+                                                                    handleAnswerQuestion(
+                                                                        e,
+                                                                        'INPUT',
+                                                                        question.id,
+                                                                        answer.id,
+                                                                    )
+                                                                }
                                                             />
                                                             <FaCirclePlus
                                                                 className="manage-answers-item-icon"
@@ -189,19 +276,25 @@ const Questions = () => {
                                         </div>
                                     </div>
 
-                                    <div className="form-preview-image">
-                                        <label className="form-label modal-btn-upload" htmlFor={question.id}>
-                                            <FaCloudUploadAlt className="modal-upload-icon" />
-                                            Upload image
+                                    <div className="form-preview-image align-self-center">
+                                        <label
+                                            className="form-label modal-btn-upload manage-questions-upload"
+                                            htmlFor={question.id}
+                                        >
+                                            <FaImage className="modal-upload-icon" color="blueviolet" />
+                                            {image ? 'Preview image' : 'Upload image'}
                                         </label>
-                                        <div className="img-preview-quiz img-preview-quiz-bg">
+                                        {/* <div className="img-preview-quiz img-preview-quiz-bg">
                                             {image ? <img src={image.preview} alt="" /> : <span>Preview image</span>}
-                                        </div>
+                                        </div> */}
+                                        <p className="clip-text">
+                                            {question.imageName ? question.imageName : 'No images have been uploaded'}
+                                        </p>
                                         <input
                                             type="file"
                                             hidden
                                             id={question.id}
-                                            onChange={(e) => handleUploadImage(e)}
+                                            onChange={(e) => handleUploadImage(e, question.id)}
                                         />
                                     </div>
 
@@ -220,7 +313,9 @@ const Questions = () => {
                                 </form>
                             );
                         })}
-                    <button className="btn-custom btn-primary ms-auto mt-3">Save</button>
+                    <button className="btn-custom btn-primary ms-auto mt-3" onClick={handleSubmitQuestions}>
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
