@@ -18,12 +18,10 @@ import 'lightgallery/scss/lightgallery.scss';
 import 'lightgallery/scss/lg-zoom.scss';
 import LightGallery from 'lightgallery/react';
 import lgZoom from 'lightgallery/plugins/zoom';
+import { toast } from 'react-toastify';
 
 const Questions = () => {
-    const [selectedQuiz, setSelectedQuiz] = useState(null);
-    const [listQuiz, setListQuiz] = useState([]);
-
-    const [questions, setQuestions] = useState([
+    const initQuestions = [
         {
             id: uuidv4(),
             desc: '',
@@ -34,10 +32,16 @@ const Questions = () => {
                     id: uuidv4(),
                     desc: '',
                     isCorrect: false,
+                    isInValidAnswer: false,
                 },
             ],
         },
-    ]);
+    ];
+    const [selectedQuiz, setSelectedQuiz] = useState(null);
+    const [listQuiz, setListQuiz] = useState([]);
+
+    const [questions, setQuestions] = useState(initQuestions);
+    const [isInValidAnswer, setIsInValidAnswer] = useState(false);
 
     // useEffect(() => {
     //     return () => {
@@ -174,6 +178,8 @@ const Questions = () => {
                     }
                     if (type === 'INPUT') {
                         answer.desc = e.target.value;
+                        answer.isInValidAnswer = false;
+                        setIsInValidAnswer(false);
                     }
                 }
                 return answer;
@@ -182,25 +188,79 @@ const Questions = () => {
         setQuestions(questionsClone);
     };
 
+    const handleValidateQA = () => {
+        let isSucceed = true;
+        let isValidateAnswer = true;
+        let isValidateQuestion = true;
+        let isValidateMinLength = true;
+        let indexQuestion = 0;
+        let indexAnswer = 0;
+        let questionMinLength = 6;
+        for (let i = 0; i < questions.length; i++) {
+            if (!questions[i].desc) {
+                isValidateQuestion = false;
+                indexQuestion = i;
+                break;
+            }
+
+            if (questions[i].desc.length < questionMinLength) {
+                isValidateMinLength = false;
+                indexQuestion = i;
+                break;
+            }
+
+            for (let j = 0; j < questions[i].answers.length; j++) {
+                if (!questions[i].answers[j].desc) {
+                    isValidateAnswer = false;
+                    indexAnswer = j;
+                    break;
+                }
+            }
+
+            if (!isValidateAnswer) {
+                indexQuestion = i;
+                break;
+            }
+        }
+
+        if (!isValidateAnswer) {
+            questions[indexQuestion].answers[indexAnswer].isInValidAnswer = true;
+            setIsInValidAnswer(true);
+            return;
+        }
+
+        if (!isValidateQuestion) {
+            toast.error(`Please enter a description for question ${indexQuestion + 1}`);
+            return;
+        }
+
+        if (!isValidateMinLength) {
+            toast.error(`Question ${indexQuestion + 1} description needs at least ${questionMinLength} characters`);
+            return;
+        }
+
+        return isSucceed;
+    };
+
     const handleSubmitQuestions = async () => {
         // validate
+        if (_.isEmpty(selectedQuiz)) {
+            toast.error('Please choose a quiz');
+            return;
+        }
+
+        if (!handleValidateQA()) return;
 
         // submit question & answers
-        await Promise.all(
-            questions.map(async (question) => {
-                const dataQuestion = await postCreateQuestionForQuiz(
-                    selectedQuiz.value,
-                    question.desc,
-                    question.imageFile,
-                );
+        for (let question of questions) {
+            const dataQuestion = await postCreateQuestionForQuiz(selectedQuiz.value, question.desc, question.imageFile);
 
-                await Promise.all(
-                    question.answers.map(async (answer) => {
-                        await postCreateAnswerForQuiz(answer.desc, answer.isCorrect, dataQuestion.DT.id);
-                    }),
-                );
-            }),
-        );
+            for (let answer of question.answers) {
+                await postCreateAnswerForQuiz(answer.desc, answer.isCorrect, dataQuestion.DT.id);
+            }
+        }
+        toast.success('Created new questions succeed');
+        setQuestions(initQuestions);
     };
 
     return (
@@ -230,6 +290,7 @@ const Questions = () => {
                                                     Question {index + 1}
                                                 </label>
                                                 <input
+                                                    spellCheck={false}
                                                     className="form-control"
                                                     id="input-quiz-desc"
                                                     type="text"
@@ -264,20 +325,33 @@ const Questions = () => {
                                                                 />
                                                                 <p></p>
                                                             </div>
-                                                            <input
-                                                                type="text"
-                                                                className="manage-answers-item-input"
-                                                                placeholder="Enter your answer..."
-                                                                value={answer.desc}
-                                                                onChange={(e) =>
-                                                                    handleAnswerQuestion(
-                                                                        e,
-                                                                        'INPUT',
-                                                                        question.id,
-                                                                        answer.id,
-                                                                    )
-                                                                }
-                                                            />
+                                                            <div className="manage-answers-item-valid">
+                                                                <input
+                                                                    type="text"
+                                                                    className={
+                                                                        answer.isInValidAnswer
+                                                                            ? 'form-control is-invalid'
+                                                                            : 'form-control'
+                                                                    }
+                                                                    placeholder="Enter your answer..."
+                                                                    value={answer.desc}
+                                                                    onChange={(e) =>
+                                                                        handleAnswerQuestion(
+                                                                            e,
+                                                                            'INPUT',
+                                                                            question.id,
+                                                                            answer.id,
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <div
+                                                                    id="validationServerUsernameFeedback"
+                                                                    className="invalid-feedback"
+                                                                >
+                                                                    Please enter your answer
+                                                                </div>
+                                                            </div>
+
                                                             <FaCirclePlus
                                                                 className="manage-answers-item-icon"
                                                                 onClick={() =>

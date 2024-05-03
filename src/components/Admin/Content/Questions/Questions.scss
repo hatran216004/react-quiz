@@ -86,7 +86,7 @@
 
 .manage-answers-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 20px;
 
     & + .manage-answers-item {
@@ -94,6 +94,7 @@
     }
 
     &-checkbox {
+        margin-top: 8px;
         padding: 0;
 
         &:hover {
@@ -111,14 +112,8 @@
         }
     }
 
-    &-input {
-        background-color: #fff;
-        padding: 0 16px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-        height: 36px;
-        min-width: 300px;
+    &-valid {
+        min-width: 400px;
     }
 
     &-icon {
@@ -132,10 +127,12 @@
         }
 
         &:nth-child(3) {
+            margin-top: 4px;
             color: rgb(47, 182, 47);
         }
 
         &:nth-child(4) {
+            margin-top: 4px;
             color: rgb(228, 72, 44);
         }
     }
