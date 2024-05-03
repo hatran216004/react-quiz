@@ -18,8 +18,22 @@
         }
     }
 
+    &-select-quiz {
+        margin-left: 30px;
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+
+        & > svg {
+            margin-bottom: 2px;
+        }
+
+        & > div {
+            min-width: 400px;
+        }
+    }
+
     &-form {
-        min-height: 304px;
         margin-top: 20px;
         padding: 20px;
 

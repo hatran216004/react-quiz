@@ -1,9 +1,15 @@
 import './Questions.scss';
 import '../../../User/Question/Question.scss';
+import {
+    getAllQuizForAdmin,
+    postCreateQuestionForQuiz,
+    postCreateAnswerForQuiz,
+} from '../../../../services/apiServices';
 
 import { FaImage } from 'react-icons/fa';
 import { FaCirclePlus, FaCircleMinus } from 'react-icons/fa6';
 import { CiCirclePlus, CiCircleMinus } from 'react-icons/ci';
+import { BsQuestionCircleFill } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,6 +21,8 @@ import lgZoom from 'lightgallery/plugins/zoom';
 
 const Questions = () => {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
+    const [listQuiz, setListQuiz] = useState([]);
+
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
@@ -31,17 +39,29 @@ const Questions = () => {
         },
     ]);
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-
     // useEffect(() => {
     //     return () => {
     //         URL.revokeObjectURL();
     //     };
     // }, []);
+
+    useEffect(() => {
+        fetchListQuiz();
+    }, []);
+
+    const fetchListQuiz = async () => {
+        let res = await getAllQuizForAdmin();
+        if (res && res.EC === 0) {
+            const data = res.DT.map((quiz) => {
+                return {
+                    value: quiz.id,
+                    label: `${quiz.id} - ${quiz.name}`,
+                };
+            });
+
+            setListQuiz(data);
+        }
+    };
 
     const handleUploadImage = (e, idQuestion) => {
         let questionsClone = _.cloneDeep(questions);
@@ -128,23 +148,15 @@ const Questions = () => {
     };
 
     const handleOnChange = (e, type, idQuestion) => {
-        switch (type) {
-            case 'QUESTION': {
-                let questionsClone = _.cloneDeep(questions);
-                const question = questionsClone.find((item) => {
-                    return item.id === idQuestion;
-                });
-                if (question) {
-                    question.desc = e.target.value;
-                    setQuestions(questionsClone);
-                }
-                break;
+        if (type === 'QUESTION') {
+            let questionsClone = _.cloneDeep(questions);
+            const question = questionsClone.find((item) => {
+                return item.id === idQuestion;
+            });
+            if (question) {
+                question.desc = e.target.value;
+                setQuestions(questionsClone);
             }
-            case 'ANSWERS': {
-                break;
-            }
-            default:
-                return;
         }
     };
 
@@ -170,8 +182,25 @@ const Questions = () => {
         setQuestions(questionsClone);
     };
 
-    const handleSubmitQuestions = () => {
-        console.log(questions);
+    const handleSubmitQuestions = async () => {
+        // validate
+
+        // submit question & answers
+        await Promise.all(
+            questions.map(async (question) => {
+                const dataQuestion = await postCreateQuestionForQuiz(
+                    selectedQuiz.value,
+                    question.desc,
+                    question.imageFile,
+                );
+
+                await Promise.all(
+                    question.answers.map(async (answer) => {
+                        await postCreateAnswerForQuiz(answer.desc, answer.isCorrect, dataQuestion.DT.id);
+                    }),
+                );
+            }),
+        );
     };
 
     return (
@@ -180,6 +209,16 @@ const Questions = () => {
             <div className="manage-questions-content mt-3">
                 <div className="manage-questions-add">
                     <h3 className="manage-questions-add-title">Add New Question</h3>
+                    <div className="manage-questions-select-quiz">
+                        <BsQuestionCircleFill color="#8a2be2" size="2rem" />
+                        <div>
+                            <label htmlFor="input-quiz-difficult" className="form-label">
+                                Select Quiz
+                            </label>
+                            <Select options={listQuiz} defaultValue={selectedQuiz} onChange={setSelectedQuiz} />
+                        </div>
+                    </div>
+
                     {questions.length > 0 &&
                         questions.map((question, index) => {
                             return (
@@ -187,19 +226,8 @@ const Questions = () => {
                                     <div className="manage-questions-form-group">
                                         <div className="questions-content">
                                             <div>
-                                                <label htmlFor="input-quiz-difficult" className="form-label">
-                                                    Select Quiz
-                                                </label>
-                                                <Select
-                                                    options={options}
-                                                    defaultValue={selectedQuiz}
-                                                    onChange={setSelectedQuiz}
-                                                />
-                                            </div>
-
-                                            <div>
                                                 <label htmlFor="input-quiz-desc" className="form-label">
-                                                    Question {index + 1} description
+                                                    Question {index + 1}
                                                 </label>
                                                 <input
                                                     className="form-control"
