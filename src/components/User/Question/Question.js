@@ -5,8 +5,6 @@ import LightGallery from 'lightgallery/react';
 import lgZoom from 'lightgallery/plugins/zoom';
 
 const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
-    // const [checked, setChecked] = useState();
-
     if (_.isEmpty(dataQuiz)) {
         return <></>;
     }

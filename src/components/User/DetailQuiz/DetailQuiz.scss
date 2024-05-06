@@ -23,7 +23,7 @@
         }
 
         &-question {
-            height: 40px;
+            height: 38px;
 
             display: flex;
             align-items: center;
@@ -32,13 +32,16 @@
             font-size: 16px;
             font-weight: 500;
             border-radius: 50%;
-            border: 1px solid #3b3838;
+            border: 1px solid rgba($color: #999, $alpha: 1);
             cursor: pointer;
-            transition: color 0.25s, border-color 0.25s;
 
             &:hover {
-                color: red;
-                border-color: red;
+                opacity: 0.6;
+            }
+
+            &.selected {
+                border-color: rgba($color: #ccc, $alpha: 0.5);
+                background-color: rgba($color: #ccc, $alpha: 0.5);
             }
         }
     }

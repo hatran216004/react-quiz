@@ -151,6 +151,7 @@ const DetailQuiz = () => {
                             <DetailQuizRight
                                 dataQuiz={dataQuiz.length > 0 && dataQuiz}
                                 handleSubmitQuiz={handleSubmitQuiz}
+                                setCurrQuestion={setCurrQuestion}
                             />
                         </div>
                     </div>
