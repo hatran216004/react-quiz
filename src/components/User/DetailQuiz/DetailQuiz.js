@@ -148,7 +148,10 @@ const DetailQuiz = () => {
                             </div>
                         </div>
                         <div className="col-lg-3">
-                            <DetailQuizRight dataQuiz={dataQuiz.length > 0 && dataQuiz} />
+                            <DetailQuizRight
+                                dataQuiz={dataQuiz.length > 0 && dataQuiz}
+                                handleSubmitQuiz={handleSubmitQuiz}
+                            />
                         </div>
                     </div>
                 </div>
