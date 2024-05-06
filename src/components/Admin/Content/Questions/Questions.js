@@ -41,7 +41,6 @@ const Questions = () => {
     const [listQuiz, setListQuiz] = useState([]);
 
     const [questions, setQuestions] = useState(initQuestions);
-    const [isInValidAnswer, setIsInValidAnswer] = useState(false);
 
     // useEffect(() => {
     //     return () => {
@@ -127,6 +126,7 @@ const Questions = () => {
                         id: uuidv4(),
                         desc: '',
                         isCorrect: false,
+                        isInValidAnswer: false,
                     };
                     question.answers.push(newAnswer);
                     setQuestions(questionsClone);
@@ -179,7 +179,6 @@ const Questions = () => {
                     if (type === 'INPUT') {
                         answer.desc = e.target.value;
                         answer.isInValidAnswer = false;
-                        setIsInValidAnswer(false);
                     }
                 }
                 return answer;
@@ -195,7 +194,7 @@ const Questions = () => {
         let isValidateMinLength = true;
         let indexQuestion = 0;
         let indexAnswer = 0;
-        let questionMinLength = 6;
+        let questionMinLength = 4;
         for (let i = 0; i < questions.length; i++) {
             if (!questions[i].desc) {
                 isValidateQuestion = false;
@@ -225,7 +224,6 @@ const Questions = () => {
 
         if (!isValidateAnswer) {
             questions[indexQuestion].answers[indexAnswer].isInValidAnswer = true;
-            setIsInValidAnswer(true);
             return;
         }
 
@@ -251,7 +249,7 @@ const Questions = () => {
 
         if (!handleValidateQA()) return;
 
-        // submit question & answers
+        // // submit question & answers
         for (let question of questions) {
             const dataQuestion = await postCreateQuestionForQuiz(selectedQuiz.value, question.desc, question.imageFile);
 

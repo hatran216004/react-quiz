@@ -1,53 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
-import {
-    ProSidebar,
-    Menu,
-    MenuItem,
-    SubMenu,
-    SidebarHeader,
-    SidebarFooter,
-    SidebarContent,
-} from "react-pro-sidebar";
-import {
-    FaUser,
-    FaTachometerAlt,
-    FaGem,
-    FaReact,
-    FaAngleDoubleRight,
-    FaAngleDoubleLeft,
-} from "react-icons/fa";
-import { GrUserManager } from "react-icons/gr";
-import "react-pro-sidebar/dist/css/styles.css";
+import { Link, useNavigate } from 'react-router-dom';
+import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
+import { FaUser, FaTachometerAlt, FaGem, FaReact, FaAngleDoubleRight, FaAngleDoubleLeft } from 'react-icons/fa';
+import { GrUserManager } from 'react-icons/gr';
+import 'react-pro-sidebar/dist/css/styles.css';
 
-import sidebarBg from "../../../assets/img/sidebar-bg.jpg";
-import "./Sidebar.scss";
-import { useState } from "react";
+import sidebarBg from '../../../assets/img/sidebar-bg.jpg';
+import './Sidebar.scss';
+import { useState } from 'react';
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
 
     return (
-        <ProSidebar
-            className="sidebar"
-            image={sidebarBg}
-            collapsed={collapsed}
-            toggled
-            breakPoint="md"
-        >
-            {/* Header */}
+        <ProSidebar className="sidebar" image={sidebarBg} collapsed={collapsed} toggled breakPoint="md">
             <SidebarHeader>
                 <Menu iconShape="circle">
                     {collapsed ? (
-                        <MenuItem
-                            icon={<FaAngleDoubleRight />}
-                            onClick={() => setCollapsed(!collapsed)}
-                        ></MenuItem>
+                        <MenuItem icon={<FaAngleDoubleRight />} onClick={() => setCollapsed(!collapsed)}></MenuItem>
                     ) : (
-                        <MenuItem
-                            suffix={<FaAngleDoubleLeft />}
-                            onClick={() => setCollapsed(!collapsed)}
-                        >
+                        <MenuItem suffix={<FaAngleDoubleLeft />} onClick={() => setCollapsed(!collapsed)}>
                             <div className="sidebar-header">
                                 <FaReact className="sidebar-header-icon" />
                                 <h3 className="sidebar-title">React Quiz</h3>
@@ -56,14 +28,13 @@ const Sidebar = () => {
                     )}
                 </Menu>
             </SidebarHeader>
-            {/* Content */}
             <SidebarContent>
                 <Menu iconShape="circle">
                     <MenuItem icon={<FaTachometerAlt />}>
                         Dashboard <Link to="/admin" />
                     </MenuItem>
                     <MenuItem icon={<FaGem />}>Components</MenuItem>
-                    <SubMenu title={"Features"} icon={<GrUserManager />}>
+                    <SubMenu title={'Features'} icon={<GrUserManager />}>
                         <MenuItem>
                             Manage Users <Link to="/admin/manage-users" />
                         </MenuItem>
@@ -77,11 +48,7 @@ const Sidebar = () => {
                     </SubMenu>
                 </Menu>
             </SidebarContent>
-            {/* Footer */}
-            <SidebarFooter
-                style={{ textAlign: "center" }}
-                onClick={() => navigate("/")}
-            >
+            <SidebarFooter style={{ textAlign: 'center' }} onClick={() => navigate('/')}>
                 <div className="sidebar-footer">
                     <FaUser />
                     <span>Home</span>

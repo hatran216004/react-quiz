@@ -102,3 +102,15 @@ export const postCreateAnswerForQuiz = (description, correct_answer, question_id
         question_id,
     });
 };
+
+export const postAssignQuiz = (quizId, userId) => {
+    return axios.post('v1/quiz-assign-to-user', { quizId, userId });
+};
+
+export const getQuizWithQA = (quizId) => {
+    return axios.get(`v1/quiz-with-qa/${quizId}`);
+};
+
+export const postUpSertQA = (data) => {
+    return axios.post('v1/quiz-upsert-qa', { ...data });
+};

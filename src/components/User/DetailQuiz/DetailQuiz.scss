@@ -8,6 +8,39 @@
     &-right {
         background-color: #f2f2f2;
         border-radius: 18px;
+        padding: 20px;
+
+        & .main-timer {
+            padding-bottom: 8px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: 600;
+            border-bottom: 1px solid #ccc;
+        }
+
+        &-questions {
+            padding: 20px;
+        }
+
+        &-question {
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 50%;
+            border: 1px solid #3b3838;
+            cursor: pointer;
+            transition: color 0.25s, border-color 0.25s;
+
+            &:hover {
+                color: red;
+                border-color: red;
+            }
+        }
     }
 
     &-title {

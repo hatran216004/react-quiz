@@ -1,10 +1,6 @@
 import './QuizQA.scss';
 import '../../../User/Question/Question.scss';
-import {
-    getAllQuizForAdmin,
-    postCreateQuestionForQuiz,
-    postCreateAnswerForQuiz,
-} from '../../../../services/apiServices';
+import { getAllQuizForAdmin, getQuizWithQA, postUpSertQA } from '../../../../services/apiServices';
 
 import { FaImage } from 'react-icons/fa';
 import { FaCirclePlus, FaCircleMinus } from 'react-icons/fa6';
@@ -24,15 +20,14 @@ const QuizQA = () => {
     const initQuestions = [
         {
             id: uuidv4(),
-            desc: '',
+            description: '',
             imageFile: '',
             imageName: '',
             answers: [
                 {
                     id: uuidv4(),
-                    desc: '',
+                    description: '',
                     isCorrect: false,
-                    isInValidAnswer: false,
                 },
             ],
         },
@@ -41,17 +36,54 @@ const QuizQA = () => {
     const [listQuiz, setListQuiz] = useState([]);
 
     const [questions, setQuestions] = useState(initQuestions);
-    const [isInValidAnswer, setIsInValidAnswer] = useState(false);
-
-    // useEffect(() => {
-    //     return () => {
-    //         URL.revokeObjectURL();
-    //     };
-    // }, []);
 
     useEffect(() => {
         fetchListQuiz();
     }, []);
+
+    useEffect(() => {
+        selectedQuiz && fetchQuizWithQA();
+    }, [selectedQuiz]);
+
+    const fetchQuizWithQA = async () => {
+        let res = await getQuizWithQA(selectedQuiz.value);
+        // convert image base64 to js obj
+        let newQA = [];
+        for (let i = 0; i < res.DT.qa.length; i++) {
+            let question = res.DT.qa[i];
+            if (question.imageFile) {
+                question.imageFile = await urltoFile(
+                    `data:image/png;base64,${question.imageFile}`,
+                    `Question-${question.id}.png`,
+                    'image/png',
+                );
+            }
+            newQA.push(question);
+        }
+
+        if (res && res.EC === 0) {
+            setQuestions(newQA);
+        }
+    };
+
+    // return a promise that resolves with a File instance
+    const urltoFile = async (url, filename, mimeType) => {
+        if (url.startsWith('data:')) {
+            var arr = url.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[arr.length - 1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            var file = new File([u8arr], filename, { type: mime || mimeType });
+            return Promise.resolve(file);
+        }
+        return fetch(url)
+            .then((res) => res.arrayBuffer())
+            .then((buf) => new File([buf], filename, { type: mimeType }));
+    };
 
     const fetchListQuiz = async () => {
         let res = await getAllQuizForAdmin();
@@ -62,7 +94,6 @@ const QuizQA = () => {
                     label: `${quiz.id} - ${quiz.name}`,
                 };
             });
-
             setListQuiz(data);
         }
     };
@@ -87,18 +118,18 @@ const QuizQA = () => {
             case 'ADD': {
                 const newQuestions = {
                     id: uuidv4(),
-                    desc: '',
+                    description: '',
                     imageFile: '',
                     imageName: '',
                     answers: [
                         {
                             id: uuidv4(),
-                            desc: '',
+                            description: '',
                             isCorrect: false,
                         },
                     ],
                 };
-                setQuestions((prev) => [...prev, newQuestions]);
+                setQuestions([...questions, newQuestions]);
                 break;
             }
             case 'REMOVE': {
@@ -125,7 +156,7 @@ const QuizQA = () => {
                 if (question) {
                     const newAnswer = {
                         id: uuidv4(),
-                        desc: '',
+                        description: '',
                         isCorrect: false,
                     };
                     question.answers.push(newAnswer);
@@ -158,7 +189,7 @@ const QuizQA = () => {
                 return item.id === idQuestion;
             });
             if (question) {
-                question.desc = e.target.value;
+                question.description = e.target.value;
                 setQuestions(questionsClone);
             }
         }
@@ -177,9 +208,7 @@ const QuizQA = () => {
                         !answer.isCorrect ? (answer.isCorrect = true) : (answer.isCorrect = false);
                     }
                     if (type === 'INPUT') {
-                        answer.desc = e.target.value;
-                        answer.isInValidAnswer = false;
-                        setIsInValidAnswer(false);
+                        answer.description = e.target.value;
                     }
                 }
                 return answer;
@@ -195,22 +224,22 @@ const QuizQA = () => {
         let isValidateMinLength = true;
         let indexQuestion = 0;
         let indexAnswer = 0;
-        let questionMinLength = 6;
+        let questionMinLength = 4;
         for (let i = 0; i < questions.length; i++) {
-            if (!questions[i].desc) {
+            if (!questions[i].description) {
                 isValidateQuestion = false;
                 indexQuestion = i;
                 break;
             }
 
-            if (questions[i].desc.length < questionMinLength) {
+            if (questions[i].description.length < questionMinLength) {
                 isValidateMinLength = false;
                 indexQuestion = i;
                 break;
             }
 
             for (let j = 0; j < questions[i].answers.length; j++) {
-                if (!questions[i].answers[j].desc) {
+                if (!questions[i].answers[j].description) {
                     isValidateAnswer = false;
                     indexAnswer = j;
                     break;
@@ -224,8 +253,7 @@ const QuizQA = () => {
         }
 
         if (!isValidateAnswer) {
-            questions[indexQuestion].answers[indexAnswer].isInValidAnswer = true;
-            setIsInValidAnswer(true);
+            toast.error(`Please enter a answer ${indexAnswer + 1} to ${indexQuestion + 1}`);
             return;
         }
 
@@ -251,17 +279,33 @@ const QuizQA = () => {
 
         if (!handleValidateQA()) return;
 
-        // submit question & answers
-        for (let question of questions) {
-            const dataQuestion = await postCreateQuestionForQuiz(selectedQuiz.value, question.desc, question.imageFile);
-
-            for (let answer of question.answers) {
-                await postCreateAnswerForQuiz(answer.desc, answer.isCorrect, dataQuestion.DT.id);
+        let questionsClone = _.cloneDeep(questions);
+        for (let i = 0; i < questionsClone.length; i++) {
+            if (questionsClone[i].imageFile) {
+                questionsClone[i].imageFile = await toBase64(questionsClone[i].imageFile);
             }
         }
-        toast.success('Created new questions succeed');
-        setQuestions(initQuestions);
+
+        let res = await postUpSertQA({
+            quizId: selectedQuiz.value,
+            questions: questionsClone,
+        });
+
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        } else {
+            toast.error(res.EM);
+        }
     };
+
+    const toBase64 = (file) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+        });
 
     return (
         <div className="quiz-QA-container">
@@ -277,7 +321,8 @@ const QuizQA = () => {
                         </div>
                     </div>
 
-                    {questions.length > 0 &&
+                    {questions &&
+                        questions.length > 0 &&
                         questions.map((question, index) => {
                             return (
                                 <form className="manage-questions-form" key={question.id}>
@@ -292,7 +337,7 @@ const QuizQA = () => {
                                                     className="form-control"
                                                     id="input-quiz-desc"
                                                     type="text"
-                                                    value={question.desc}
+                                                    value={question.description}
                                                     onChange={(e) => handleOnChange(e, 'QUESTION', question.id)}
                                                     placeholder="Enter your description..."
                                                 />
@@ -326,13 +371,9 @@ const QuizQA = () => {
                                                             <div className="manage-answers-item-valid">
                                                                 <input
                                                                     type="text"
-                                                                    className={
-                                                                        answer.isInValidAnswer
-                                                                            ? 'form-control is-invalid'
-                                                                            : 'form-control'
-                                                                    }
+                                                                    className="form-control"
                                                                     placeholder="Enter your answer..."
-                                                                    value={answer.desc}
+                                                                    value={answer.description}
                                                                     onChange={(e) =>
                                                                         handleAnswerQuestion(
                                                                             e,
@@ -342,12 +383,6 @@ const QuizQA = () => {
                                                                         )
                                                                     }
                                                                 />
-                                                                <div
-                                                                    id="validationServerUsernameFeedback"
-                                                                    className="invalid-feedback"
-                                                                >
-                                                                    Please enter your answer
-                                                                </div>
                                                             </div>
 
                                                             <FaCirclePlus

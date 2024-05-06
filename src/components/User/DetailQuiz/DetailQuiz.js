@@ -1,11 +1,12 @@
-import "./DetailQuiz.scss";
-import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import _ from "lodash";
+import './DetailQuiz.scss';
+import { useEffect, useState } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
+import _ from 'lodash';
 
-import { getDataQuiz, postSubmitQuiz } from "../../../services/apiServices";
-import Question from "../Question";
-import ModalSubmitQuiz from "../ModalSubmitQuiz";
+import { getDataQuiz, postSubmitQuiz } from '../../../services/apiServices';
+import Question from '../Question';
+import ModalSubmitQuiz from '../ModalSubmitQuiz';
+import DetailQuizRight from '../DetailQuizRight';
 
 const DetailQuiz = () => {
     const [dataQuiz, setDataQuiz] = useState([]);
@@ -17,7 +18,6 @@ const DetailQuiz = () => {
     const params = useParams();
     const quizId = params.id;
     const location = useLocation();
-    console.log(location);
 
     useEffect(() => {
         fetchQuestion();
@@ -28,7 +28,7 @@ const DetailQuiz = () => {
         if (res && res.EC === 0) {
             let raw = res.DT;
             let data = _.chain(raw)
-                .groupBy("id") // groupby các obj có id giống nhau vào cùng 1 mảng
+                .groupBy('id') // groupby các obj có id giống nhau vào cùng 1 mảng
                 .map((value, key) => {
                     // value: mỗi mảng gồm các obj có cùng id
                     // key: id
@@ -58,8 +58,7 @@ const DetailQuiz = () => {
     };
 
     const handleNextQuestion = () => {
-        if (currQuestion + 1 < dataQuiz.length)
-            setCurrQuestion(currQuestion + 1);
+        if (currQuestion + 1 < dataQuiz.length) setCurrQuestion(currQuestion + 1);
         else {
             return;
         }
@@ -69,7 +68,7 @@ const DetailQuiz = () => {
         let dataQuizClone = _.cloneDeep(dataQuiz); // clone mảng chứa các câu hỏi
         let question = dataQuizClone.find(
             // tìm câu hỏi có id trùng với questionId
-            (item) => +item.questionId === +questionId
+            (item) => +item.questionId === +questionId,
         );
         if (question) {
             // mảng các câu trả lời sau khi cập nhật isSelected
@@ -84,9 +83,7 @@ const DetailQuiz = () => {
                 return item;
             });
         }
-        let index = dataQuizClone.findIndex(
-            (item) => +item.questionId === +questionId
-        );
+        let index = dataQuizClone.findIndex((item) => +item.questionId === +questionId);
         if (index > -1) {
             dataQuizClone[index] = question;
             setDataQuiz(dataQuizClone);
@@ -127,7 +124,7 @@ const DetailQuiz = () => {
             <div className="detail-quiz-container mt-3">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-8">
+                        <div className="col-lg-9">
                             <div className="detail-quiz-left">
                                 <div className="detail-quiz-title">
                                     Quiz {quizId}. {location?.state?.quizTitle}
@@ -135,37 +132,23 @@ const DetailQuiz = () => {
                                 <Question
                                     handleCheckbox={handleCheckbox}
                                     currQuestion={currQuestion}
-                                    dataQuiz={
-                                        dataQuiz.length > 0 &&
-                                        dataQuiz[currQuestion]
-                                    }
+                                    dataQuiz={dataQuiz.length > 0 && dataQuiz[currQuestion]}
                                 />
                                 <div className="detail-quiz-footer mt-5">
-                                    <button
-                                        className="btn-custom question-btn"
-                                        onClick={handlePrevQuestion}
-                                    >
+                                    <button className="btn-custom question-btn" onClick={handlePrevQuestion}>
                                         Back
                                     </button>
-                                    <button
-                                        className="btn-custom question-btn"
-                                        onClick={handleNextQuestion}
-                                    >
+                                    <button className="btn-custom question-btn" onClick={handleNextQuestion}>
                                         Next
                                     </button>
-                                    <button
-                                        className="btn-custom btn-primary"
-                                        onClick={handleSubmitQuiz}
-                                    >
+                                    <button className="btn-custom btn-primary" onClick={handleSubmitQuiz}>
                                         Finish
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                            <div className="detail-quiz-right">
-                                Detail quiz right
-                            </div>
+                        <div className="col-lg-3">
+                            <DetailQuizRight dataQuiz={dataQuiz.length > 0 && dataQuiz} />
                         </div>
                     </div>
                 </div>
