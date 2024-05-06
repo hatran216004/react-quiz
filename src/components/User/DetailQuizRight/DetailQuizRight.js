@@ -7,6 +7,7 @@ const DetailQuizRight = ({ dataQuiz, handleSubmitQuiz, setCurrQuestion }) => {
     };
 
     const getClassQuestion = (question) => {
+        // Kiểm tra xem có câu trl nào đc check chưa
         let checkAnswer = question.answers.some((answer) => answer.isSelected);
         if (checkAnswer) return 'detail-quiz-right-question selected';
         else return 'detail-quiz-right-question';

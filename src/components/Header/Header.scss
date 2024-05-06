@@ -14,5 +14,10 @@
     &-actions {
         display: flex;
         align-items: center;
+
+        &-icon {
+            width: 24px;
+            height: 18px;
+        }
     }
 }
