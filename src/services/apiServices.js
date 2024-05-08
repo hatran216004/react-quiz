@@ -118,3 +118,7 @@ export const getQuizWithQA = (quizId) => {
 export const postUpSertQA = (data) => {
     return axios.post('v1/quiz-upsert-qa', { ...data });
 };
+
+export const getDashboardOverview = () => {
+    return axios.get('v1/overview');
+};

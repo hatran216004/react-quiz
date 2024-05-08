@@ -1,45 +1,73 @@
 import './DashBoard.scss';
 import Languages from '../../../Header/Languages';
+import { getDashboardOverview } from '../../../../services/apiServices';
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import { CiSearch, CiBellOn, CiChat2, CiMenuFries } from 'react-icons/ci';
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ResponsiveContainer } from 'recharts';
+import { useEffect, useState } from 'react';
 
 const DashBoard = () => {
-    const data = [
+    const [dataOverview, setDataOverview] = useState([]);
+    const [dataChart, setDataChart] = useState([]);
+
+    useEffect(() => {
+        fetchDataOverview();
+    }, []);
+
+    const fetchDataOverview = async () => {
+        let res = await getDashboardOverview();
+        if (res && res.EC === 0) {
+            setDataOverview(res.DT);
+            // chart data
+            let Qz = res?.DT?.others?.countQuiz ?? 0;
+            let Qs = res?.DT?.others?.countQuestions ?? 0;
+            let As = res?.DT?.others?.countAnswers ?? 0;
+
+            const data = [
+                {
+                    name: 'Quizzes',
+                    Qz: Qz,
+                },
+                {
+                    name: 'Questions',
+                    Qs: Qs,
+                },
+                {
+                    name: 'Answers',
+                    As: As,
+                },
+            ];
+            setDataChart(data);
+        }
+    };
+
+    console.log('dataOverview: ', dataOverview);
+
+    const dataCard = [
         {
-            name: 'Page A',
-            uv: 4000,
-            pv: 2400,
+            title: 'Total users',
+            number: dataOverview && dataOverview.users ? dataOverview.users.total : 'no data',
+            percent: '+14%',
+            time: 'Since last week',
         },
         {
-            name: 'Page B',
-            uv: 3000,
-            pv: 1398,
+            title: 'Total users',
+            number: dataOverview && dataOverview.others ? dataOverview.others.countQuiz : 'no data',
+            percent: '-12%',
+            time: 'Since last week',
         },
         {
-            name: 'Page C',
-            uv: 2000,
-            pv: 9800,
+            title: 'Total Questions',
+            number: dataOverview && dataOverview.others ? dataOverview.others.countQuestions : 'no data',
+            percent: '-18%',
+            time: 'Since last week',
         },
         {
-            name: 'Page D',
-            uv: 2780,
-            pv: 3908,
-        },
-        {
-            name: 'Page E',
-            uv: 1890,
-            pv: 4800,
-        },
-        {
-            name: 'Page F',
-            uv: 2390,
-            pv: 3800,
-        },
-        {
-            name: 'Page G',
-            uv: 3490,
-            pv: 4300,
+            title: 'Total Answers',
+            number: dataOverview && dataOverview.others ? dataOverview.others.countAnswers : 'no data',
+            percent: '+27%',
+            time: 'Since last week',
         },
     ];
 
@@ -77,51 +105,33 @@ const DashBoard = () => {
                     <div className="row">
                         <div className="col-md-5">
                             <div className="dashboard-content-left">
-                                <div className="dashboard-card">
-                                    <h4 className="dashboard-card-title">Total users</h4>
-                                    <div className="dashboard-card-number">24523</div>
-                                    <div className="dashboard-card-bottom">
-                                        <div className="dashboard-card-bottom-left">+14%</div>
-                                        <div className="dashboard-card-bottom-right">Since last week</div>
-                                    </div>
-                                </div>
-                                <div className="dashboard-card">
-                                    <h4 className="dashboard-card-title">Total Quizzes</h4>
-                                    <div className="dashboard-card-number">24523</div>
-                                    <div className="dashboard-card-bottom">
-                                        <div className="dashboard-card-bottom-left">+14%</div>
-                                        <div className="dashboard-card-bottom-right">Since last week</div>
-                                    </div>
-                                </div>
-                                <div className="dashboard-card">
-                                    <h4 className="dashboard-card-title">Total Questions</h4>
-                                    <div className="dashboard-card-number">24523</div>
-                                    <div className="dashboard-card-bottom">
-                                        <div className="dashboard-card-bottom-left">+14%</div>
-                                        <div className="dashboard-card-bottom-right">Since last week</div>
-                                    </div>
-                                </div>
-                                <div className="dashboard-card">
-                                    <h4 className="dashboard-card-title">Total Answers</h4>
-                                    <div className="dashboard-card-number">24523</div>
-                                    <div className="dashboard-card-bottom">
-                                        <div className="dashboard-card-bottom-left">+14%</div>
-                                        <div className="dashboard-card-bottom-right">Since last week</div>
-                                    </div>
-                                </div>
+                                {dataCard.map((card, index) => {
+                                    return (
+                                        <div className="dashboard-card" key={index}>
+                                            <h4 className="dashboard-card-title">{card.title}</h4>
+                                            <div className="dashboard-card-number">{card.number}</div>
+                                            <div className="dashboard-card-bottom">
+                                                <div className="dashboard-card-bottom-left">{card.percent}</div>
+                                                <div className="dashboard-card-bottom-right">{card.time}</div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
+
                         <div className="col-md-7">
                             <div className="dashboard-content-right">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={data}>
+                                    <BarChart data={dataChart}>
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <XAxis dataKey="name" />
                                         <YAxis />
                                         <Tooltip />
                                         <Legend />
-                                        <Bar dataKey="pv" fill="#8884d8" />
-                                        <Bar dataKey="uv" fill="#82ca9d" />
+                                        <Bar dataKey="Qz" fill="#8884d8" />
+                                        <Bar dataKey="Qs" fill="#82ca9d" />
+                                        <Bar dataKey="As" fill="#0dcaf0" />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
