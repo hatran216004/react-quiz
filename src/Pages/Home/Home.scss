@@ -4,18 +4,14 @@
 
     &-left {
         &__heading {
-            max-width: 489px;
+            margin-bottom: 0;
+            margin-top: 12px;
             color: #010101;
             font-size: 70px;
             font-weight: 700;
 
             & span {
-                background: linear-gradient(
-                    269deg,
-                    #a6cf4a 16.43%,
-                    #ffd05a 37.58%,
-                    #fd60a9 54.54%
-                );
+                background: linear-gradient(269deg, #a6cf4a 16.43%, #ffd05a 37.58%, #fd60a9 54.54%);
                 background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -63,19 +59,14 @@
         position: relative;
 
         &::after {
-            content: "";
+            content: '';
             width: 555px;
             height: 100%;
             position: absolute;
             top: 0;
             right: -108px;
             border-top-left-radius: 20%;
-            background: linear-gradient(
-                71deg,
-                #ff60a8 22.92%,
-                #ffd05a 62.85%,
-                #a6cf4a 96.68%
-            );
+            background: linear-gradient(71deg, #ff60a8 22.92%, #ffd05a 62.85%, #a6cf4a 96.68%);
         }
 
         &-img {
@@ -84,8 +75,8 @@
             object-fit: cover;
             position: absolute;
             top: 40%;
-            left: 20px;
-            transform: translate(0, -50%);
+            left: 47%;
+            transform: translate(-50%, -50%);
             z-index: 4;
         }
 
@@ -101,11 +92,7 @@
         &-circle,
         &-circle::after,
         &-circle::before {
-            background: linear-gradient(
-                142deg,
-                rgba(255, 255, 255, 0.58) 1.8%,
-                rgba(255, 255, 255, 0.66) 99.75%
-            );
+            background: linear-gradient(142deg, rgba(255, 255, 255, 0.58) 1.8%, rgba(255, 255, 255, 0.66) 99.75%);
             backdrop-filter: blur(65.02783203125px);
             border-radius: 50%;
             position: absolute;
@@ -129,14 +116,14 @@
         }
 
         &-circle::after {
-            content: "";
+            content: '';
             width: 490px;
             height: 489px;
             z-index: 2;
         }
 
         &-circle::before {
-            content: "";
+            content: '';
             width: 389px;
             height: 388px;
             z-index: 3;

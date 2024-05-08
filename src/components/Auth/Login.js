@@ -1,19 +1,19 @@
-import "./Auth.scss";
-import { useState } from "react";
-import { MdOutlineEmail } from "react-icons/md";
-import { FaFacebookF, FaGoogle, FaTwitter, FaArrowLeft } from "react-icons/fa";
-import { AiOutlineLoading } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import './Auth.scss';
+import { useState } from 'react';
+import { MdOutlineEmail } from 'react-icons/md';
+import { FaFacebookF, FaGoogle, FaTwitter, FaArrowLeft } from 'react-icons/fa';
+import { AiOutlineLoading } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
-import { postLogin } from "../../services/apiServices";
-import form__bg from "../../assets/img/form-login-bg.jpg";
-import { doLogin } from "../../redux/action/userAction";
+import { postLogin } from '../../services/apiServices';
+import form__bg from '../../assets/img/form-login-bg.jpg';
+import { doLogin } from '../../redux/action/userAction';
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     let navigate = useNavigate();
@@ -23,7 +23,7 @@ const Login = () => {
         return String(email)
             .toLowerCase()
             .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             );
     };
 
@@ -32,12 +32,12 @@ const Login = () => {
         // validate
         const isValidEmail = validateEmail(email);
         if (!isValidEmail) {
-            toast.error("Please enter a valid emal address!");
+            toast.error('Please enter a valid emal address!');
             return;
         }
 
         if (!password) {
-            toast.error("Please enter your password!");
+            toast.error('Please enter your password!');
             return;
         }
 
@@ -47,7 +47,7 @@ const Login = () => {
             toast.success(res.EM);
             dispatch(doLogin(res));
             setLoading(false);
-            navigate("/");
+            navigate('/');
         } else {
             toast.error(res.EM);
             setLoading(false);
@@ -74,14 +74,9 @@ const Login = () => {
                                     className="form-input"
                                     placeholder="Type your email"
                                     value={email}
-                                    onChange={(e) =>
-                                        setEmail(e.target.value.trimStart(" "))
-                                    }
+                                    onChange={(e) => setEmail(e.target.value.trimStart(' '))}
                                 />
-                                <MdOutlineEmail
-                                    className="form-icon"
-                                    color="#888"
-                                />
+                                <MdOutlineEmail className="form-icon" color="#888" />
                             </div>
                         </div>
                         <div className="form-group">
@@ -96,25 +91,13 @@ const Login = () => {
                                     type="password"
                                     className="form-input"
                                     value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                         </div>
-                        <span className="form-forgotpassword">
-                            Forgot password?
-                        </span>
-                        <button
-                            disabled={loading}
-                            className="form-submit"
-                            onClick={(e) => handleLogin(e)}
-                        >
-                            {loading ? (
-                                <AiOutlineLoading className="form-icon-loading" />
-                            ) : (
-                                "Login"
-                            )}
+                        <span className="form-forgotpassword">Forgot password?</span>
+                        <button disabled={loading} className="form-submit" onClick={(e) => handleLogin(e)}>
+                            {loading ? <AiOutlineLoading className="form-icon-loading" /> : 'Login'}
                         </button>
                     </form>
                     <span className="form-signup-order">Or Sign In Using</span>
@@ -129,18 +112,13 @@ const Login = () => {
                             <FaGoogle color="#fff" />
                         </div>
                     </div>
-                    <span className="form-signup-order">
-                        Have not account yet ?
-                    </span>
+                    <span className="form-signup-order">Have not account yet ?</span>
                     <div className="d-flex justify-content-center">
-                        <button
-                            className="form-bottom"
-                            onClick={() => navigate("/signup")}
-                        >
+                        <button className="form-bottom" onClick={() => navigate('/signup')}>
                             SIGN UP
                         </button>
                     </div>
-                    <div className="form-back" onClick={() => navigate("/")}>
+                    <div className="form-back" onClick={() => navigate('/')}>
                         <FaArrowLeft className="form-back-icon" />
                         Back
                     </div>

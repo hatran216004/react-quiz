@@ -2,6 +2,7 @@ import './Header.scss';
 import logo from '../../assets/img/logo512.png';
 import { postLogout } from '../../services/apiServices';
 import { doLogout } from '../../redux/action/userAction';
+import Languages from './Languages';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -54,6 +55,8 @@ const Header = () => {
                             Admin
                         </NavLink>
                     </Nav>
+
+                    <Languages />
                     <Nav>
                         {!isAuthenticated ? (
                             <div className="header-actions">

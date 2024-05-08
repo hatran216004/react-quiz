@@ -211,5 +211,14 @@ label {
 }
 
 .dropdown-menu[data-bs-popper] {
-    left: -34px;
+    right: 0;
+    left: initial;
+}
+
+.switch-languages {
+    margin-right: 20px;
+
+    & .dropdown-toggle::after {
+        display: none !important;
+    }
 }
