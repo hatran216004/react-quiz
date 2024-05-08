@@ -217,6 +217,12 @@ label {
 
 .switch-languages {
     margin-right: 20px;
+    min-width: 84px;
+    text-align: center;
+
+    &-no-margin {
+        margin-right: 0;
+    }
 
     & .dropdown-toggle::after {
         display: none !important;

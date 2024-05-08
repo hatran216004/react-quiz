@@ -1,0 +1,130 @@
+.dashboard {
+    &-header-inner {
+        padding: 12px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &-heading {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    &-search {
+        padding: 0 12px;
+        min-width: 300px;
+        height: 36px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+        }
+
+        &-input {
+            font-size: 14px;
+            flex: 1;
+            height: 100%;
+        }
+    }
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        &-icon {
+            font-size: 24px;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
+        }
+    }
+
+    &-content {
+        padding: 48px;
+        border-radius: 4px;
+        background: rgb(247, 249, 252);
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+
+        &-title {
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        &-desc {
+            padding-bottom: 20px;
+            font-weight: 400;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        &-body {
+            padding-top: 24px;
+        }
+    }
+
+    &-content-left {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    &-content-right {
+        height: 100%;
+    }
+
+    &-card {
+        padding: 16px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 6px;
+        color: rgba(0, 0, 0, 0.87);
+        box-shadow: rgba(50, 50, 93, 0.024) 0px 2px 5px -1px, rgba(0, 0, 0, 0.05) 0px 1px 3px -1;
+
+        &-title {
+            margin: 0px 0px 24px;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+
+        &-number {
+            margin: 0px 0px 24px;
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+    }
+
+    &-card-bottom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &-left {
+            margin-right: 8px;
+            padding: 2px;
+            color: rgb(76, 175, 80);
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 3px;
+        }
+
+        &-right {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.57;
+            color: rgba(0, 0, 0, 0.6);
+        }
+    }
+}
