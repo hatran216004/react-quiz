@@ -3,16 +3,15 @@ import _ from 'lodash';
 import no_image from '../../../assets/img/no-img.jpg';
 import LightGallery from 'lightgallery/react';
 import lgZoom from 'lightgallery/plugins/zoom';
+import { FaCheck } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 
-const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
+const Question = ({ currQuestion, dataQuiz, handleCheckbox, showAnswer }) => {
     if (_.isEmpty(dataQuiz)) {
         return <></>;
     }
 
-    // const handleCheckAnswer = (answerId, questionId) => {
-    //     handleCheckbox(answerId, questionId);
-    // };
-
+    console.log(dataQuiz);
     return (
         <div className="question-wrapper">
             <h1 className="question-title">
@@ -50,6 +49,19 @@ const Question = ({ currQuestion, dataQuiz, handleCheckbox }) => {
                                             onChange={() => handleCheckbox(item.id, dataQuiz.questionId)}
                                         />
                                         <p>{item.description}</p>
+                                        {showAnswer && (
+                                            <>
+                                                {item.isCorrect ? (
+                                                    <FaCheck className="question-answer-icon" color="green" />
+                                                ) : (
+                                                    <IoMdClose
+                                                        className="question-answer-icon"
+                                                        size="1.5rem"
+                                                        color="red"
+                                                    />
+                                                )}
+                                            </>
+                                        )}
                                     </label>
                                 );
                             })}

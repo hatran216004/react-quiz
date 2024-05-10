@@ -51,12 +51,18 @@ const Header = () => {
                             <NavLink to="/" className="nav-link  ps-3 pe-3">
                                 Home
                             </NavLink>
-                            <NavLink to="/users" className="nav-link  ps-3 pe-3">
-                                Users
-                            </NavLink>
-                            <NavLink to="/admin" className="nav-link  ps-3 pe-3">
-                                Admin
-                            </NavLink>
+                            {account.role === 'USER' || account.role === 'ADMIN' ? (
+                                <NavLink to="/users" className="nav-link  ps-3 pe-3">
+                                    Users
+                                </NavLink>
+                            ) : (
+                                <></>
+                            )}
+                            {account.role === 'ADMIN' && (
+                                <NavLink to="/admin" className="nav-link  ps-3 pe-3">
+                                    Admin
+                                </NavLink>
+                            )}
                         </Nav>
 
                         <Nav>

@@ -15,6 +15,7 @@ const DetailQuiz = () => {
 
     const [showModalSubmit, setShowModalSubmit] = useState(false);
     const [dataResult, setDataResult] = useState();
+    const [showAnswer, setShowAnswer] = useState(false);
 
     const params = useParams();
     const quizId = params.id;
@@ -29,11 +30,11 @@ const DetailQuiz = () => {
         if (res && res.EC === 0) {
             let raw = res.DT;
             let data = _.chain(raw)
-                .groupBy('id') // groupby các obj có id giống nhau vào cùng 1 mảng
+                .groupBy('id') // groupby các question có id giống nhau vào cùng 1 mảng
                 .map((value, key) => {
-                    // value: mỗi mảng gồm các obj có cùng id
+                    // value: mỗi mảng gồm các question có cùng id
                     // key: id
-                    let answers = []; // mảng chứa các câu trl của mỗi obj
+                    let answers = []; // mảng chứa các câu trl của mỗi question
                     let questionDesc,
                         image = null;
                     value.forEach((item, index) => {
@@ -42,6 +43,7 @@ const DetailQuiz = () => {
                             image = item.image;
                         }
                         item.answers.isSelected = false;
+                        item.answers.isCorrect = false;
                         answers.push(item.answers);
                     });
                     answers = _.orderBy(answers, ['id'], ['asc']);
@@ -79,9 +81,6 @@ const DetailQuiz = () => {
                 if (answerId === item.id) {
                     item.isSelected = !item.isSelected;
                 }
-                // else {
-                //     item.isSelected = false;
-                // }
                 return item;
             });
         }
@@ -121,6 +120,28 @@ const DetailQuiz = () => {
         }
     };
 
+    const handleShowAnswer = () => {
+        const dataQuizClone = _.cloneDeep(dataQuiz);
+        let questions = dataResult.quizData;
+        for (let question of questions) {
+            for (let i = 0; i < dataQuizClone.length; i++) {
+                if (+question.questionId === +dataQuizClone[i].questionId) {
+                    let newAnswers = [];
+                    for (let j = 0; j < dataQuizClone[i].answers.length; j++) {
+                        let search = question.systemAnswers.find((item) => +item.id === dataQuizClone[i].answers[j].id);
+                        if (search) {
+                            dataQuizClone[i].answers[j].isCorrect = true;
+                        }
+                        newAnswers.push(dataQuizClone[i].answers[j]);
+                    }
+                    dataQuizClone[i].answers = newAnswers;
+                }
+            }
+        }
+        setDataQuiz(dataQuizClone);
+        setShowModalSubmit(false);
+        setShowAnswer(true);
+    };
     return (
         <>
             <div className="detail-quiz-container mt-3">
@@ -137,6 +158,7 @@ const DetailQuiz = () => {
                                     Quiz {quizId}. {location?.state?.quizTitle}
                                 </div>
                                 <Question
+                                    showAnswer={showAnswer}
                                     handleCheckbox={handleCheckbox}
                                     currQuestion={currQuestion}
                                     dataQuiz={dataQuiz.length > 0 && dataQuiz[currQuestion]}
@@ -148,7 +170,12 @@ const DetailQuiz = () => {
                                     <button className="btn-custom question-btn" onClick={handleNextQuestion}>
                                         Next
                                     </button>
-                                    <button className="btn-custom btn-primary" onClick={handleSubmitQuiz}>
+                                    <button
+                                        className={
+                                            showAnswer ? 'btn-custom btn-primary disabled ' : 'btn-custom btn-primary'
+                                        }
+                                        onClick={handleSubmitQuiz}
+                                    >
                                         Finish
                                     </button>
                                 </div>
@@ -168,6 +195,7 @@ const DetailQuiz = () => {
                 show={showModalSubmit}
                 setShow={setShowModalSubmit}
                 dataResult={dataResult ? dataResult : {}}
+                handleShowAnswer={handleShowAnswer}
             />
         </>
     );

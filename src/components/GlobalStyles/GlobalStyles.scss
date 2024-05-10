@@ -25,6 +25,7 @@ button {
     padding: 0;
     border: none;
     outline: none;
+    user-select: none;
     background-color: transparent;
 }
 
@@ -223,4 +224,9 @@ label {
 
 .dropdown-toggle::after {
     display: none !important;
+}
+
+.disabled {
+    opacity: 0.3;
+    pointer-events: none;
 }

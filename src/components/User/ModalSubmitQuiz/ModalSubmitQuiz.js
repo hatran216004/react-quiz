@@ -2,7 +2,7 @@ import './ModalSubmitQuiz.scss';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const ModalSubmitQuiz = ({ show, setShow, dataResult }) => {
+const ModalSubmitQuiz = ({ show, setShow, dataResult, handleShowAnswer }) => {
     const handleClose = () => setShow(false);
 
     return (
@@ -21,6 +21,9 @@ const ModalSubmitQuiz = ({ show, setShow, dataResult }) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="info" onClick={handleShowAnswer}>
+                    Show answer
+                </Button>
                 <Button variant="success" onClick={handleClose}>
                     Comfirm
                 </Button>

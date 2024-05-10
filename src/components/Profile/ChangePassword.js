@@ -27,42 +27,42 @@ const ChangePassword = ({ handleClose }) => {
     return (
         <form className="row g-3">
             <div className="col-md-12">
-                <label htmlFor="inputPassword4" className="form-label">
+                <label htmlFor="inputPassword" className="form-label">
                     Current password
                 </label>
                 <input
                     autoComplete="off"
                     type="password"
                     className="form-control"
-                    id="inputPassword4"
+                    id="inputPassword"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                 />
             </div>
 
             <div className="col-md-12">
-                <label htmlFor="inputPassword4" className="form-label">
+                <label htmlFor="inputPassword2" className="form-label">
                     New Password
                 </label>
                 <input
                     autoComplete="off"
                     type="password"
                     className="form-control"
-                    id="inputPassword4"
+                    id="inputPassword2"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
             </div>
 
             <div className="col-md-12">
-                <label htmlFor="inputPassword4" className="form-label">
+                <label htmlFor="inputPassword3" className="form-label">
                     Comfirm password
                 </label>
                 <input
                     autoComplete="off"
                     type="password"
                     className="form-control"
-                    id="inputPassword4"
+                    id="inputPassword3"
                     value={confirmPassword}
                     onChange={(e) => setComfirmPassword(e.target.value)}
                 />

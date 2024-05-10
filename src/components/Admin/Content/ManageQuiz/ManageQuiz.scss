@@ -19,6 +19,21 @@
         font-weight: 600;
         color: #784ba0;
     }
+
+    &-content {
+        padding: 0 14px;
+    }
+
+    &-form-row {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+
+    &-form-group {
+        margin-top: 20px;
+        flex: 1;
+    }
 }
 
 .css-13cymwt-control {

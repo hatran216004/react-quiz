@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import "./ManageQuiz.scss";
-import "../ManageUsers/ManageUsers.scss";
-import { toast } from "react-toastify";
-import Select from "react-select";
-import { postCreateNewQuiz } from "../../../../services/apiServices";
+import { useEffect, useState } from 'react';
+import { FaCloudUploadAlt } from 'react-icons/fa';
+import './ManageQuiz.scss';
+import '../ManageUsers/ManageUsers.scss';
+import { toast } from 'react-toastify';
+import Select from 'react-select';
+import { postCreateNewQuiz } from '../../../../services/apiServices';
 
 const CreateQuiz = ({ fetchListQuiz }) => {
-    const [name, setName] = useState("");
-    const [desc, setDesc] = useState("");
+    const [name, setName] = useState('');
+    const [desc, setDesc] = useState('');
     const [type, setType] = useState();
     const [image, setImage] = useState();
 
     const options = [
-        { value: "EASY", label: "EASY" },
-        { value: "MEDIUM", label: "MEDIUM" },
-        { value: "HARD", label: "HARD" },
+        { value: 'EASY', label: 'EASY' },
+        { value: 'MEDIUM', label: 'MEDIUM' },
+        { value: 'HARD', label: 'HARD' },
     ];
 
     useEffect(() => {
@@ -33,21 +33,21 @@ const CreateQuiz = ({ fetchListQuiz }) => {
 
     const handleSubmitCreateQuiz = async () => {
         if (!type) {
-            toast.error("Please select difficult of quiz!");
+            toast.error('Please select difficult of quiz!');
             return;
         }
 
         let res = await postCreateNewQuiz(desc, name, type?.value, image);
         if (!name && !desc) {
-            toast.error("Name / Description is requird!");
+            toast.error('Name / Description is requird!');
             return;
         }
 
         if (res && res.EC === 0) {
             toast.success(res.EM);
 
-            setName("");
-            setDesc("");
+            setName('');
+            setDesc('');
             setType();
             setImage();
 
@@ -59,8 +59,29 @@ const CreateQuiz = ({ fetchListQuiz }) => {
 
     return (
         <>
-            <form className="row g-3">
-                <div className="col-md-12">
+            <form>
+                <div className="manage-quiz-form-row">
+                    <div className="manage-quiz-form-group">
+                        <label htmlFor="input-quiz-difficult" className="form-label">
+                            Difficult
+                        </label>
+                        <Select options={options} defaultValue={type} onChange={setType} />
+                    </div>
+
+                    <div className="manage-quiz-form-group">
+                        <label htmlFor="input-quiz-name" className="form-label">
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="input-quiz-name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="manage-quiz-form-group">
                     <label htmlFor="input-quiz-desc" className="form-label">
                         Description
                     </label>
@@ -72,61 +93,19 @@ const CreateQuiz = ({ fetchListQuiz }) => {
                         onChange={(e) => setDesc(e.target.value)}
                     />
                 </div>
-                <div className="col-md-8">
-                    <label htmlFor="input-quiz-name" className="form-label">
-                        Name
+                <div className="manage-quiz-form-row mt-3">
+                    <label className="form-label modal-btn-upload" htmlFor="upload">
+                        <FaCloudUploadAlt className="modal-upload-icon" />
+                        Upload image
                     </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="input-quiz-name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
-                <div className="col-md-4">
-                    <label
-                        htmlFor="input-quiz-difficult"
-                        className="form-label"
-                    >
-                        Difficult
-                    </label>
-                    <Select
-                        options={options}
-                        defaultValue={type}
-                        onChange={setType}
-                    />
-                </div>
-                <div className="col-md-12">
-                    <div className="d-flex align-items-center gap-5">
-                        <label
-                            className="form-label modal-btn-upload"
-                            htmlFor="upload"
-                        >
-                            <FaCloudUploadAlt className="modal-upload-icon" />
-                            Upload image
-                        </label>
-                        <div className="img-preview-quiz img-preview-quiz-bg">
-                            {image ? (
-                                <img src={image.preview} alt="" />
-                            ) : (
-                                <span>Preview image</span>
-                            )}
-                        </div>
+                    <div className="img-preview-quiz img-preview-quiz-bg">
+                        {image ? <img src={image.preview} alt="" /> : <span>Preview image</span>}
                     </div>
-                    <input
-                        type="file"
-                        hidden
-                        id="upload"
-                        onChange={(e) => handleUploadImage(e)}
-                    />
+                    <input type="file" hidden id="upload" onChange={(e) => handleUploadImage(e)} />
                 </div>
             </form>
 
-            <button
-                className="btn-custom btn-primary ms-auto"
-                onClick={handleSubmitCreateQuiz}
-            >
+            <button className="btn-custom btn-primary ms-auto" onClick={handleSubmitCreateQuiz}>
                 Save
             </button>
         </>

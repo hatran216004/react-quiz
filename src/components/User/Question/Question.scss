@@ -40,7 +40,9 @@
 
     &-answer {
         padding: 16px;
-        display: block;
+        display: flex;
+        align-items: center;
+
         background-color: #fff;
         border-radius: 8px;
         border: 1px solid transparent;
@@ -90,6 +92,10 @@
                 display: none;
             }
         }
+    }
+
+    &-answer-icon {
+        margin-left: 12px;
     }
 
     &-btn {

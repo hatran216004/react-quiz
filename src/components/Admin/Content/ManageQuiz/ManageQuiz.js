@@ -7,6 +7,8 @@ import TableQuiz from './TableQuiz';
 import CreateQuiz from './CreateQuiz';
 import QuizQA from './QuizQA';
 import AssignQuiz from './AssignQuiz';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 const ManageQuiz = () => {
     const [listQuiz, setListQuiz] = useState([]);
@@ -26,35 +28,18 @@ const ManageQuiz = () => {
         <div className="manage-quiz-container">
             <h1 className="manage-quiz-title">Manage Quiz</h1>
             <div className="manage-quiz-content">
-                <Accordion className="mt-3">
-                    <Accordion.Item eventKey="0">
-                        <Accordion.Header>
-                            <h3 className="manage-quiz-heading">Add new quiz</h3>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            <CreateQuiz fetchListQuiz={fetchListQuiz} />
-                            <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
-                        </Accordion.Body>
-                    </Accordion.Item>
-
-                    <Accordion.Item eventKey="1">
-                        <Accordion.Header>
-                            <h3 className="manage-quiz-heading">Update Q & A</h3>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            <QuizQA />
-                        </Accordion.Body>
-                    </Accordion.Item>
-
-                    <Accordion.Item eventKey="2">
-                        <Accordion.Header>
-                            <h3 className="manage-quiz-heading">Assign to Users</h3>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            <AssignQuiz />
-                        </Accordion.Body>
-                    </Accordion.Item>
-                </Accordion>
+                <Tabs defaultActiveKey="add" id="uncontrolled-tab-example" className="mb-3">
+                    <Tab eventKey="add" title="Add new quiz">
+                        <CreateQuiz fetchListQuiz={fetchListQuiz} />
+                        <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
+                    </Tab>
+                    <Tab eventKey="update" title="Update Q & A">
+                        <QuizQA />
+                    </Tab>
+                    <Tab eventKey="assign" title="Assign to Users">
+                        <AssignQuiz />
+                    </Tab>
+                </Tabs>
             </div>
         </div>
     );
