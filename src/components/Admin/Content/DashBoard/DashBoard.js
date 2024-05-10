@@ -42,8 +42,6 @@ const DashBoard = () => {
         }
     };
 
-    console.log('dataOverview: ', dataOverview);
-
     const dataCard = [
         {
             title: 'Total users',

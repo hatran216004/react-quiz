@@ -6,18 +6,43 @@
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    animation: spinner 3.2s linear infinite;
 }
 
 .header {
     &-actions {
         display: flex;
         align-items: center;
+        gap: 16px;
 
         &-icon {
             width: 24px;
             height: 18px;
         }
+    }
+}
+
+.navbar-brand {
+    margin-right: 0 !important;
+}
+
+.user {
+    &-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ccc;
+    }
+}
+
+@keyframes spinner {
+    0% {
+        rotate: 0;
+    }
+    100% {
+        rotate: 360deg;
     }
 }

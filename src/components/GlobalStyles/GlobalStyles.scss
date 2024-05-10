@@ -34,10 +34,6 @@ button {
     .nav-link {
         font-weight: 500;
         font-size: 17px;
-
-        &.active {
-            color: #40e0fb;
-        }
     }
 }
 
@@ -223,8 +219,8 @@ label {
     &-no-margin {
         margin-right: 0;
     }
+}
 
-    & .dropdown-toggle::after {
-        display: none !important;
-    }
+.dropdown-toggle::after {
+    display: none !important;
 }

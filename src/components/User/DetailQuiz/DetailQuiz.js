@@ -2,6 +2,7 @@ import './DetailQuiz.scss';
 import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 import { getDataQuiz, postSubmitQuiz } from '../../../services/apiServices';
 import Question from '../Question';
@@ -124,6 +125,11 @@ const DetailQuiz = () => {
         <>
             <div className="detail-quiz-container mt-3">
                 <div className="container">
+                    <Breadcrumb>
+                        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+                        <Breadcrumb.Item href="/users">Users</Breadcrumb.Item>
+                        <Breadcrumb.Item active>Quiz</Breadcrumb.Item>
+                    </Breadcrumb>
                     <div className="row">
                         <div className="col-lg-9">
                             <div className="detail-quiz-left">

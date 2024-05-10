@@ -122,3 +122,15 @@ export const postUpSertQA = (data) => {
 export const getDashboardOverview = () => {
     return axios.get('v1/overview');
 };
+
+export const refreshToken = (email, refresh_token) => {
+    return axios.post('v1/refresh-token', { email, refresh_token });
+};
+
+export const postUpdateProfile = (username, userImage) => {
+    const data = new FormData();
+    data.append('username', username);
+    data.append('userImage', userImage);
+
+    return axios.post('v1/profile', data);
+};
