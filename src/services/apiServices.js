@@ -134,3 +134,11 @@ export const postUpdateProfile = (username, userImage) => {
 
     return axios.post('v1/profile', data);
 };
+
+export const postChangePassword = (current_password, new_password) => {
+    return axios.post('v1/change-password', { current_password, new_password });
+};
+
+export const getHistoryQuiz = () => {
+    return axios.get('v1/history');
+};

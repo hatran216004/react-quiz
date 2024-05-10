@@ -28,7 +28,7 @@ const UserInfo = ({ handleClose }) => {
                 setPreviewImage(newImage);
             }
         }
-    }, []);
+    }, [account]);
 
     useEffect(() => {
         return () => {

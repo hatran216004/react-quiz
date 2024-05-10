@@ -3,4 +3,9 @@
         display: flex;
         justify-content: flex-end;
     }
+
+    &-table {
+        height: 500px;
+        overflow: auto;
+    }
 }
